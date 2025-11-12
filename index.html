@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Grelaud — Portfolio Assistant Trader</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #1a1a1a;
+            --color-secondary: #7B7B7B;
+            --color-accent: #2c5aa0;
+            --color-light: #F8F8F8;
+            --color-white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            color: var(--color-primary);
+            background: var(--color-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+
+        .cta-button {
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: 0.7rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 3rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-label {
+            font-size: 0.85rem;
+            color: var(--color-secondary);
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--color-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat {
+            padding: 1.5rem 0;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--color-secondary);
+            line-height: 1.4;
+        }
+
+        .scroll-indicator {
+            margin-top: 4rem;
+            font-size: 0.9rem;
+            color: var(--color-secondary);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .scroll-indicator:hover {
+            transform: translateY(5px);
+        }
+
+        /* Sections communes */
+        section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 3rem;
+        }
+
+        .section-header {
+            font-size: 0.85rem;
+            color: var(--color-secondary);
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--color-primary);
+            padding: 2rem;
+            border-left: 3px solid var(--color-accent);
+            margin: 2rem 0;
+            background: var(--color-light);
+        }
+
+        /* Approche Section */
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .approach-item {
+            padding: 2rem 0;
+            border-top: 2px solid var(--color-light);
+            transition: border-color 0.3s;
+        }
+
+        .approach-item:hover {
+            border-color: var(--color-accent);
+        }
+
+        .approach-number {
+            font-size: 0.9rem;
+            color: var(--color-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .approach-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .approach-description {
+            color: var(--color-secondary);
+            line-height: 1.7;
+        }
+
+        /* Compétences Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .skill-category {
+            padding: 2rem;
+            background: var(--color-light);
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-category h3 {
+            font-size: 0.9rem;
+            color: var(--color-secondary);
+            letter-spacing: 1.5px;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .skill-category ul {
+            list-style: none;
+        }
+
+        .skill-category li {
+            padding: 0.7rem 0;
+            color: var(--color-primary);
+            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .skill-category li:last-child {
+            border-bottom: none;
+        }
+
+        /* Analyses Section */
+        .analyses-grid {
+            display: grid;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .analysis-card {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 3rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--color-white);
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .analysis-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-light);
+        }
+
+        .analysis-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .analysis-subtitle {
+            color: var(--color-secondary);
+            font-size: 0.95rem;
+        }
+
+        .analysis-content {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .analysis-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--color-light);
+        }
+
+        .analysis-row:last-child {
+            border-bottom: none;
+        }
+
+        .analysis-label {
+            font-weight: 600;
+            color: var(--color-secondary);
+            font-size: 0.9rem;
+        }
+
+        .analysis-text {
+            color: var(--color-primary);
+            line-height: 1.7;
+        }
+
+        /* Mindset Section */
+        .mindset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .mindset-item {
+            padding: 1.5rem;
+            border-left: 3px solid var(--color-accent);
+            background: var(--color-light);
+        }
+
+        .mindset-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+        }
+
+        .mindset-item p {
+            color: var(--color-secondary);
+            line-height: 1.6;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--color-primary);
+            color: var(--color-white);
+            text-align: center;
+            padding: 6rem 3rem;
+        }
+
+        .contact h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 2rem;
+        }
+
+        .contact p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-button {
+            padding: 1rem 2.5rem;
+            border: 2px solid var(--color-white);
+            color: var(--color-white);
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .contact-button:hover {
+            background: var(--color-white);
+            color: var(--color-primary);
+            transform: translateY(-3px);
+        }
+
+        .contact-button.primary {
+            background: var(--color-white);
+            color: var(--color-primary);
+        }
+
+        .contact-button.primary:hover {
+            background: transparent;
+            color: var(--color-white);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-primary);
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 6rem 2rem 3rem;
+            }
+
+            section {
+                padding: 4rem 2rem;
+            }
+
+            .analysis-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">MG</a>
+            <ul class="nav-links">
+                <li><a href="#about">À propos</a></li>
+                <li><a href="#approche">Approche</a></li>
+                <li><a href="#competences">Compétences</a></li>
+                <li><a href="#analyses">Analyses</a></li>
+                <li><a href="#mindset">Mindset</a></li>
+            </ul>
+            <a href="#contact" class="cta-button">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content fade-in-up">
+            <div class="hero-label">Portfolio / 2025</div>
+            <h1 class="hero-title">Max<br>Grelaud</h1>
+            <p class="hero-subtitle">Candidat Assistant Trader — Finance de Marché</p>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">+3</div>
+                    <div class="stat-label">Analyses de marchés réalisées</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">+10</div>
+                    <div class="stat-label">Compétences techniques</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Passion pour les marchés</div>
+                </div>
+            </div>
+            
+            <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+                Scroll down ↓
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="section-header">À propos</div>
+        <h2 class="section-title">Qui suis-je ?</h2>
+        <div class="section-divider"></div>
+        
+        <div class="about-content">
+            <div class="about-text">
+                <p>Étudiant passionné par les marchés financiers, je combine formation académique rigoureuse et pratique autodidacte. Mon expérience internationale au Portugal m'a enseigné l'adaptabilité et la prise de décision rapide dans des environnements changeants.</p>
+                
+                <p>Je pratique l'analyse de marchés de manière autonome : recherche fondamentale, suivi des earnings, veille macroéconomique. Ma conviction : l'excellence en trading nécessite curiosité constante et discipline sans faille.</p>
+            </div>
+            
+            <div>
+                <div class="quote">
+                    "Transformer les données en opportunités à travers une analyse rigoureuse et une exécution disciplinée."
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approche Section -->
+    <section id="approche">
+        <div class="section-header">Ma méthode</div>
+        <h2 class="section-title">Mon Approche</h2>
+        <div class="section-divider"></div>
+        
+        <div class="approach-grid">
+            <div class="approach-item">
+                <div class="approach-number">01</div>
+                <h3 class="approach-title">Analyse Fondamentale</h3>
+                <p class="approach-description">Étude approfondie des business models, KPIs et catalyseurs de croissance.</p>
+            </div>
+            
+            <div class="approach-item">
+                <div class="approach-number">02</div>
+                <h3 class="approach-title">Data-Driven</h3>
+                <p class="approach-description">Décisions basées sur les données financières, techniques et macroéconomiques.</p>
+            </div>
+            
+            <div class="approach-item">
+                <div class="approach-number">03</div>
+                <h3 class="approach-title">Gestion du Risque</h3>
+                <p class="approach-description">Conscience permanente du risk/reward et des scénarios alternatifs.</p>
+            </div>
+            
+            <div class="approach-item">
+                <div class="approach-number">04</div>
+                <h3 class="approach-title">Apprentissage Continu</h3>
+                <p class="approach-description">Veille quotidienne et analyse post-mortem systématique.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compétences Section -->
+    <section id="competences">
+        <div class="section-header">Expertise</div>
+        <h2 class="section-title">Compétences</h2>
+        <div class="section-divider"></div>
+        
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3>Analyse de Données</h3>
+                <ul>
+                    <li>Excel Avancé (TCD, VBA)</li>
+                    <li>Python (pandas, numpy)</li>
+                    <li>SAP Analytics Cloud</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3>Marchés Financiers</h3>
+                <ul>
+                    <li>Analyse fondamentale</li>
+                    <li>Suivi macro (Fed, BCE)</li>
+                    <li>Produits dérivés</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3>Outils Professionnels</h3>
+                <ul>
+                    <li>Bloomberg Terminal</li>
+                    <li>Interactive Brokers</li>
+                    <li>Financial Times, Bloomberg</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3>Langues</h3>
+                <ul>
+                    <li>Français (natif)</li>
+                    <li>Anglais (professionnel)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analyses Section -->
+    <section id="analyses">
+        <div class="section-header">Projets</div>
+        <h2 class="section-title">Analyses de Marchés</h2>
+        <div class="section-divider"></div>
+        
+        <p style="color: var(--color-secondary); font-size: 1.1rem; margin-top: 2rem;">
+            Trois analyses récentes menées de manière autonome autour des publications de résultats (earnings season, octobre 2025).
+        </p>
+        
+        <div class="analyses-grid">
+            <!-- AMD -->
+            <div class="analysis-card">
+                <div class="analysis-header">
+                    <div class="analysis-number">01</div>
+                    <div class="analysis-info">
+                        <h3>AMD</h3>
+                        <p class="analysis-subtitle">Advanced Micro Devices — Avant earnings Q3 2025</p>
+                    </div>
+                </div>
+                
+                <div class="analysis-content">
+                    <div class="analysis-row">
+                        <div class="analysis-label">Thèse</div>
+                        <div class="analysis-text">Position d'AMD dans l'IA (MI300 chips) et data centers</div>
+                    </div>
+                    <div class="analysis-row">
+                        <div class="analysis-label">Catalyseurs</div>
+                        <div class="analysis-text">Croissance data centers IA • Part de marché CPU serveurs • Guidance Q4 attendue forte</div>
+                    </div>
+                    <div class="analysis-row">
+                        <div class="analysis-label">Risques</div>
+                        <div class="analysis-text">Concurrence NVIDIA dominante • Cycle des semi-conducteurs • Valorisation élevée</div>
+                    </div>
+                    <div class="analysis-row">
+                        <div class="analysis-label">Approche</div>
+                        <div class="analysis-text">Analyse fondamentale (P/E, revenus) • Positionnement vs NVDA/INTC • Sentiment pré-earnings</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pinterest -->
+            <div class="analysis-card">
+                <div class="analysis-header">
+                    <div class="analysis-number">02</div>
+                    <div class="analysis-info">
+                        <h3>Pinterest</h3>
+                        <p class="analysis-subtitle">PINS — Earnings season tech</p>
+                    </div>
+                </div>
+                
+                <div class="analysis-content">
+                    <div class="analysis-row">
+                        <div class="analysis-label">Thèse</div>
+                        <div class="analysis-text">Potentiel de monétisation utilisateurs + croissance publicitaire</div>
+                    </div>
+                    <div class="analysis-row">
+                        <div class="analysis-label">Catalyseurs</div>
+                        <div class="analysis-text">Audience qualifiée (intention d'achat) • Amélioration ARPU • Croissance internationale</div>
+                    </div>
+                    <div class="analysis-row">
+                        <div class="analysis-label">Risques</div>
+                        <div class="analysis-text">Ralentissement croissance utilisateurs • Concurrence META/SNAP • Sensibilité budget pub</div>
+                    </div>
+                    <div class="analysis-row">
+                        <div class="analysis-label">Approche</div>
+                        <div class="analysis-text">Comparaison métriques vs META/SNAP • Évolution KPIs (MAU, ARPU)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Duolingo -->
+            <div class="analysis-card">
+                <div class="analysis-header">
+                    <div class="analysis-number">03</div>
+                    <div class="analysis-info">
+                        <h3>Duolingo</h3>
+                        <p class="analysis-subtitle">DUOL — EdTech & IA</p>
+                    </div>
+                </div>
+                
+                <div class="analysis-content">
+                    <div class="analysis-row">
+                        <div class="analysis-label">Thèse</div>
+                        <div class="analysis-text">Leader EdTech + intégration IA (GPT-4) dans l'apprentissage</div>
+                    </div>
+                    <div class="analysis-row">
+                        <div class="analysis-label">Catalyseurs</div>
+                        <div class="analysis-text">Abonnements premium • Expansion internationale • Gamification & rétention</div>
+                    </div>
+                    <div class="analysis-row">
+                        <div class="analysis-label">Risques</div>
+                        <div class="analysis-text">Coût d'acquisition utilisateurs (CAC) • Taux conversion freemium→premium • Marge opérationnelle</div>
+                    </div>
+                    <div class="analysis-row">
+                        <div class="analysis-label">Approche</div>
+                        <div class="analysis-text">Veille concurrentielle vs Babbel, Rosetta Stone</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mindset Section -->
+    <section id="mindset">
+        <div class="section-header">Philosophie</div>
+        <h2 class="section-title">Mindset de Trading</h2>
+        <div class="section-divider"></div>
+        
+        <div class="mindset-grid">
+            <div class="mindset-item">
+                <h4>Discipline</h4>
+                <p>Process rigoureux et décisions rationnelles, sans émotion</p>
+            </div>
+            
+            <div class="mindset-item">
+                <h4>Documentation</h4>
+                <p>Journal de trading avec analyse post-mortem systématique</p>
+            </div>
+            
+            <div class="mindset-item">
+                <h4>Focus Risk/Reward</h4>
+                <p>Toujours évaluer le downside avant l'upside</p>
+            </div>
+            
+            <div class="mindset-item">
+                <h4>Humilité</h4>
+                <p>Les marchés ont toujours raison. Accepter ses erreurs</p>
+            </div>
+            
+            <div class="mindset-item">
+                <h4>Adaptabilité</h4>
+                <p>Savoir pivoter selon les conditions de marché</p>
+            </div>
+            
+            <div class="mindset-item">
+                <h4>Curiosité</h4>
+                <p>Comprendre le 'pourquoi' derrière chaque mouvement</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>Prêt à discuter ?</h2>
+        <p>Je suis disponible pour échanger sur les opportunités en finance de marché et assistant trader.</p>
+        <div class="contact-buttons">
+            <a href="mailto:maxgrelaud.pro@gmail.com" class="contact-button primary">Envoyer un email</a>
+            <a href="https://www.linkedin.com/in/max-grelaud/" target="_blank" class="contact-button">LinkedIn</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Max Grelaud — Portfolio Assistant Trader</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">Créé avec passion pour les marchés financiers</p>
+    </footer>
+
+    <script>
+        // Smooth scroll animation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+                observer.observe(section);
+            });
+        });
+
+        // Active nav link on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.color = 'var(--color-secondary)';
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.style.color = 'var(--color-primary)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
