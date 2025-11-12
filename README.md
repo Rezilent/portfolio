@@ -4,7 +4,7 @@ Portfolio professionnel pour candidatures Assistant Trader en Finance de Marché
 
 ## 🚀 Site web
 
-Accessible à : [https://maxgrelaud.github.io/portfolio](https://maxgrelaud.github.io/portfolio)
+Accessible à : [https://rezilent.github.io/portfolio/](https://rezilent.github.io/portfolio/)
 
 ## 📋 Contenu
 
