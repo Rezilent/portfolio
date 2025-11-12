@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Grelaud — Portfolio Assistant Trader</title>
+    <title>Max Grelaud — Assistant Trader</title>
     <style>
         * {
             margin: 0;
@@ -12,11 +12,13 @@
         }
 
         :root {
+            --color-dark: #0a0a0a;
             --color-primary: #1a1a1a;
-            --color-secondary: #7B7B7B;
-            --color-accent: #2c5aa0;
-            --color-light: #F8F8F8;
-            --color-white: #ffffff;
+            --color-accent: #00ff88;
+            --color-accent-blue: #2c5aa0;
+            --color-text: #ffffff;
+            --color-text-dim: #999999;
+            --color-border: #2a2a2a;
         }
 
         html {
@@ -25,10 +27,42 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            color: var(--color-primary);
-            background: var(--color-white);
-            line-height: 1.6;
+            background: var(--color-dark);
+            color: var(--color-text);
             overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Loading Animation */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-text {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         /* Navigation */
@@ -36,15 +70,20 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
             z-index: 1000;
             padding: 1.5rem 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid var(--color-border);
+            transition: transform 0.3s;
+        }
+
+        nav.hidden {
+            transform: translateY(-100%);
         }
 
         .nav-container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 0 3rem;
             display: flex;
@@ -55,188 +94,388 @@
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--color-primary);
+            color: var(--color-accent);
             text-decoration: none;
+            letter-spacing: 2px;
         }
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 3rem;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
-            color: var(--color-secondary);
+            color: var(--color-text-dim);
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             transition: color 0.3s;
-            letter-spacing: 0.3px;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-accent);
+            transition: width 0.3s;
         }
 
         .nav-links a:hover {
-            color: var(--color-primary);
+            color: var(--color-text);
         }
 
-        .cta-button {
-            background: var(--color-primary);
-            color: var(--color-white);
-            padding: 0.7rem 1.5rem;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        /* Hero Carousel */
+        .hero-carousel {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 8rem 3rem 4rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
         }
 
         .hero-content {
-            max-width: 800px;
-        }
-
-        .hero-label {
-            font-size: 0.85rem;
-            color: var(--color-secondary);
-            letter-spacing: 2px;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            width: 90%;
+            max-width: 1200px;
         }
 
         .hero-title {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 700;
-            line-height: 1.1;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            line-height: 1;
             margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--color-text) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero-subtitle {
-            font-size: 1.3rem;
-            color: var(--color-secondary);
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--color-text-dim);
             margin-bottom: 3rem;
-        }
-
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat {
-            padding: 1.5rem 0;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--color-secondary);
-            line-height: 1.4;
-        }
-
-        .scroll-indicator {
-            margin-top: 4rem;
-            font-size: 0.9rem;
-            color: var(--color-secondary);
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .scroll-indicator:hover {
-            transform: translateY(5px);
-        }
-
-        /* Sections communes */
-        section {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 6rem 3rem;
-        }
-
-        .section-header {
-            font-size: 0.85rem;
-            color: var(--color-secondary);
             letter-spacing: 2px;
-            margin-bottom: 1rem;
             text-transform: uppercase;
         }
 
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, 10px); }
+        }
+
+        /* Section commune */
+        section {
+            min-height: 100vh;
+            padding: 8rem 3rem;
+            position: relative;
+        }
+
+        .section-label {
+            font-size: 0.9rem;
+            color: var(--color-accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
         .section-title {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
+            font-size: clamp(3rem, 6vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 3rem;
+            line-height: 1.1;
+            text-transform: uppercase;
         }
 
         .section-divider {
-            width: 100%;
-            height: 1px;
-            background: rgba(0, 0, 0, 0.1);
-            margin: 2rem 0;
+            width: 100px;
+            height: 3px;
+            background: var(--color-accent);
+            margin: 3rem 0;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
         }
 
         /* About Section */
-        .about-content {
+        .about {
+            background: var(--color-primary);
+        }
+
+        .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            margin-top: 3rem;
+            gap: 6rem;
+            align-items: center;
         }
 
         .about-text p {
-            font-size: 1.1rem;
-            color: var(--color-primary);
-            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
             line-height: 1.8;
+            color: var(--color-text-dim);
+            margin-bottom: 2rem;
         }
 
         .quote {
-            font-size: 1.3rem;
+            font-size: 1.8rem;
             font-style: italic;
-            color: var(--color-primary);
-            padding: 2rem;
-            border-left: 3px solid var(--color-accent);
-            margin: 2rem 0;
-            background: var(--color-light);
+            color: var(--color-accent);
+            padding: 3rem;
+            border-left: 4px solid var(--color-accent);
+            background: rgba(0, 255, 136, 0.05);
+            margin: 3rem 0;
         }
 
-        /* Approche Section */
+        /* Track Visual Selector */
+        .track-visual-section {
+            height: 100vh;
+            padding: 0;
+            background: var(--color-primary);
+            overflow: hidden;
+        }
+
+        .track-container {
+            height: 100%;
+            display: flex;
+            position: relative;
+        }
+
+        .track-side {
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .track-left {
+            flex: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .track-right {
+            flex: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .track-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            transition: background 0.8s;
+        }
+
+        .track-side:hover .track-image-overlay {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .track-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(2rem, 4vw, 4rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--color-text);
+            letter-spacing: 3px;
+            z-index: 2;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .track-details {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40%;
+            padding: 4rem;
+            opacity: 0;
+            z-index: 3;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .track-right .track-details {
+            right: auto;
+            left: 0;
+        }
+
+        .track-details h3 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--color-accent);
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+        }
+
+        .detail-item {
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+            border-left: 3px solid var(--color-accent);
+        }
+
+        .detail-item h4 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-item p {
+            font-size: 1rem;
+            color: var(--color-text-dim);
+            line-height: 1.6;
+        }
+
+        .track-cta {
+            margin-top: 3rem;
+            padding: 1rem 2rem;
+            background: var(--color-accent);
+            color: var(--color-dark);
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .track-cta:hover {
+            background: var(--color-text);
+            transform: translateX(10px);
+        }
+
+        /* States d'expansion */
+        .track-side.expanded {
+            flex: 3;
+        }
+
+        .track-side.collapsed {
+            flex: 0.3;
+        }
+
+        .track-side.expanded .track-title {
+            left: 30%;
+            font-size: clamp(1.5rem, 3vw, 3rem);
+        }
+
+        .track-side.collapsed .track-title {
+            font-size: clamp(1rem, 2vw, 2rem);
+            opacity: 0.5;
+        }
+
+        .track-side.expanded .track-details {
+            opacity: 1;
+        }
+
+        /* ON TRACK Section */
+        .on-track {
+            background: var(--color-dark);
+        }
+
         .approach-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 3rem;
-            margin-top: 3rem;
+            margin: 4rem 0;
         }
 
-        .approach-item {
-            padding: 2rem 0;
-            border-top: 2px solid var(--color-light);
-            transition: border-color 0.3s;
+        .approach-card {
+            padding: 3rem;
+            background: var(--color-primary);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .approach-item:hover {
+        .approach-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--color-accent);
+            transition: height 0.3s;
+        }
+
+        .approach-card:hover::before {
+            height: 100%;
+        }
+
+        .approach-card:hover {
+            transform: translateY(-10px);
             border-color: var(--color-accent);
         }
 
         .approach-number {
-            font-size: 0.9rem;
-            color: var(--color-secondary);
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--color-accent);
+            opacity: 0.3;
             margin-bottom: 1rem;
         }
 
@@ -244,112 +483,91 @@
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            color: var(--color-primary);
-        }
-
-        .approach-description {
-            color: var(--color-secondary);
-            line-height: 1.7;
-        }
-
-        /* Compétences Section */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-
-        .skill-category {
-            padding: 2rem;
-            background: var(--color-light);
-            border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .skill-category:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .skill-category h3 {
-            font-size: 0.9rem;
-            color: var(--color-secondary);
-            letter-spacing: 1.5px;
-            margin-bottom: 1.5rem;
             text-transform: uppercase;
         }
 
-        .skill-category ul {
-            list-style: none;
-        }
-
-        .skill-category li {
-            padding: 0.7rem 0;
-            color: var(--color-primary);
-            font-size: 0.95rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .skill-category li:last-child {
-            border-bottom: none;
+        .approach-description {
+            color: var(--color-text-dim);
+            line-height: 1.7;
         }
 
         /* Analyses Section */
+        .analyses-section {
+            background: var(--color-primary);
+        }
+
         .analyses-grid {
             display: grid;
             gap: 4rem;
-            margin-top: 3rem;
+            margin: 4rem 0;
         }
 
         .analysis-card {
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            padding: 3rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            background: var(--color-white);
+            background: var(--color-dark);
+            border: 1px solid var(--color-border);
+            padding: 4rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analysis-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .analysis-card:hover::after {
+            left: 100%;
         }
 
         .analysis-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            transform: scale(1.02);
+            border-color: var(--color-accent);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.2);
         }
 
         .analysis-header {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
         .analysis-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--color-light);
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--color-accent);
+            opacity: 0.2;
         }
 
         .analysis-info h3 {
-            font-size: 1.8rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.5rem;
         }
 
         .analysis-subtitle {
-            color: var(--color-secondary);
-            font-size: 0.95rem;
+            color: var(--color-text-dim);
+            font-size: 1.1rem;
         }
 
         .analysis-content {
             display: grid;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .analysis-row {
             display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--color-light);
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--color-border);
         }
 
         .analysis-row:last-child {
@@ -357,489 +575,836 @@
         }
 
         .analysis-label {
-            font-weight: 600;
-            color: var(--color-secondary);
+            font-weight: 700;
+            color: var(--color-accent);
+            text-transform: uppercase;
             font-size: 0.9rem;
+            letter-spacing: 1px;
         }
 
         .analysis-text {
-            color: var(--color-primary);
-            line-height: 1.7;
+            color: var(--color-text-dim);
+            line-height: 1.8;
+        }
+
+        /* OFF TRACK Section */
+        .off-track {
+            background: var(--color-dark);
+        }
+
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .hobby-card {
+            aspect-ratio: 1;
+            background: var(--color-primary);
+            border: 1px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 3rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .hobby-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--color-accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s;
+            opacity: 0.1;
+        }
+
+        .hobby-card:hover::before {
+            width: 500px;
+            height: 500px;
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--color-accent);
+        }
+
+        .hobby-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            z-index: 1;
+        }
+
+        .hobby-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 1;
+        }
+
+        .hobby-description {
+            color: var(--color-text-dim);
+            margin-top: 1rem;
+            z-index: 1;
+        }
+
+        /* Portugal Section */
+        .portugal-section {
+            background: var(--color-primary);
+            padding: 8rem 3rem;
+        }
+
+        .portugal-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .portugal-text h3 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            color: var(--color-accent);
+        }
+
+        .portugal-text p {
+            font-size: 1.2rem;
+            color: var(--color-text-dim);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .portugal-image {
+            height: 500px;
+            background: var(--color-dark);
+            border: 2px solid var(--color-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-dim);
+            font-size: 1.2rem;
         }
 
         /* Mindset Section */
+        .mindset-section {
+            background: var(--color-dark);
+        }
+
         .mindset-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
-            margin-top: 3rem;
+            margin: 4rem 0;
         }
 
         .mindset-item {
-            padding: 1.5rem;
-            border-left: 3px solid var(--color-accent);
-            background: var(--color-light);
+            padding: 3rem;
+            background: var(--color-primary);
+            border-left: 4px solid var(--color-accent);
+            transition: all 0.3s;
+        }
+
+        .mindset-item:hover {
+            transform: translateX(10px);
+            background: rgba(0, 255, 136, 0.05);
         }
 
         .mindset-item h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: var(--color-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-accent);
         }
 
         .mindset-item p {
-            color: var(--color-secondary);
-            line-height: 1.6;
+            color: var(--color-text-dim);
+            line-height: 1.7;
         }
 
         /* Contact Section */
         .contact {
             background: var(--color-primary);
-            color: var(--color-white);
             text-align: center;
-            padding: 6rem 3rem;
+            padding: 8rem 3rem;
         }
 
         .contact h2 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 900;
             margin-bottom: 2rem;
+            text-transform: uppercase;
         }
 
         .contact p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 3rem;
-            max-width: 600px;
+            font-size: 1.3rem;
+            color: var(--color-text-dim);
+            margin-bottom: 4rem;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .contact-buttons {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             justify-content: center;
             flex-wrap: wrap;
         }
 
         .contact-button {
-            padding: 1rem 2.5rem;
-            border: 2px solid var(--color-white);
-            color: var(--color-white);
+            padding: 1.5rem 3rem;
+            border: 2px solid var(--color-accent);
+            color: var(--color-text);
+            background: transparent;
             text-decoration: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: background 0.3s, transform 0.3s;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--color-accent);
+            transition: left 0.3s;
+            z-index: -1;
+        }
+
+        .contact-button:hover::before {
+            left: 0;
         }
 
         .contact-button:hover {
-            background: var(--color-white);
-            color: var(--color-primary);
-            transform: translateY(-3px);
+            color: var(--color-dark);
         }
 
         .contact-button.primary {
-            background: var(--color-white);
-            color: var(--color-primary);
+            background: var(--color-accent);
+            color: var(--color-dark);
         }
 
         .contact-button.primary:hover {
             background: transparent;
-            color: var(--color-white);
+            color: var(--color-accent);
         }
 
         /* Footer */
         footer {
-            background: var(--color-primary);
-            color: rgba(255, 255, 255, 0.6);
+            background: var(--color-dark);
+            padding: 3rem;
             text-align: center;
-            padding: 2rem;
-            font-size: 0.9rem;
+            color: var(--color-text-dim);
+            border-top: 1px solid var(--color-border);
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .about-content {
+        @media (max-width: 1024px) {
+            .about-grid,
+            .portugal-content {
                 grid-template-columns: 1fr;
             }
 
-            .hero {
-                padding: 6rem 2rem 3rem;
-            }
-
-            section {
-                padding: 4rem 2rem;
+            .mindset-grid {
+                grid-template-columns: 1fr;
             }
 
             .analysis-row {
                 grid-template-columns: 1fr;
             }
+
+            .track-container {
+                flex-direction: column;
+            }
+
+            .track-side {
+                height: 50vh;
+            }
+
+            .track-details {
+                width: 80%;
+                padding: 2rem;
+            }
+
+            .track-side.expanded {
+                flex: 2;
+            }
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .track-visual-section {
+                height: auto;
+            }
+
+            .track-container {
+                flex-direction: column;
+            }
+
+            .track-side {
+                min-height: 50vh;
+            }
+
+            .track-title {
+                font-size: 1.8rem !important;
+            }
+
+            .track-details {
+                width: 90%;
+                padding: 2rem;
+            }
+
+            .track-side.expanded .track-title {
+                left: 50%;
             }
         }
 
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out;
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hidden class for track sections */
+        .hidden-track {
+            display: none;
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-text">MG</div>
+    </div>
+
     <!-- Navigation -->
-    <nav>
+    <nav id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">MG</a>
             <ul class="nav-links">
                 <li><a href="#about">À propos</a></li>
-                <li><a href="#approche">Approche</a></li>
-                <li><a href="#competences">Compétences</a></li>
+                <li><a href="#track">Track</a></li>
                 <li><a href="#analyses">Analyses</a></li>
                 <li><a href="#mindset">Mindset</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
-            <a href="#contact" class="cta-button">Contact</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content fade-in-up">
-            <div class="hero-label">Portfolio / 2025</div>
-            <h1 class="hero-title">Max<br>Grelaud</h1>
-            <p class="hero-subtitle">Candidat Assistant Trader — Finance de Marché</p>
-            
-            <div class="hero-stats">
-                <div class="stat">
-                    <div class="stat-number">+3</div>
-                    <div class="stat-label">Analyses de marchés réalisées</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">+10</div>
-                    <div class="stat-label">Compétences techniques</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Passion pour les marchés</div>
-                </div>
-            </div>
-            
-            <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
-                Scroll down ↓
-            </div>
+    <!-- Hero Carousel -->
+    <div class="hero-carousel">
+        <div class="carousel-slide active">
+            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1920&q=80" alt="Trading desk">
         </div>
-    </section>
+        <div class="carousel-slide">
+            <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1920&q=80" alt="Financial charts">
+        </div>
+        <div class="carousel-slide">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80" alt="Business meeting">
+        </div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Max Grelaud</h1>
+            <p class="hero-subtitle">Assistant Trader — Finance de Marché</p>
+        </div>
+        
+        <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+            Scroll ↓
+        </div>
+    </div>
 
     <!-- About Section -->
-    <section id="about">
-        <div class="section-header">À propos</div>
-        <h2 class="section-title">Qui suis-je ?</h2>
-        <div class="section-divider"></div>
-        
-        <div class="about-content">
-            <div class="about-text">
-                <p>Étudiant passionné par les marchés financiers, je combine formation académique rigoureuse et pratique autodidacte. Mon expérience internationale au Portugal m'a enseigné l'adaptabilité et la prise de décision rapide dans des environnements changeants.</p>
-                
-                <p>Je pratique l'analyse de marchés de manière autonome : recherche fondamentale, suivi des earnings, veille macroéconomique. Ma conviction : l'excellence en trading nécessite curiosité constante et discipline sans faille.</p>
-            </div>
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-label">À propos</div>
+            <h2 class="section-title">Qui suis-je ?</h2>
+            <div class="section-divider"></div>
             
-            <div>
-                <div class="quote">
-                    "Transformer les données en opportunités à travers une analyse rigoureuse et une exécution disciplinée."
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Approche Section -->
-    <section id="approche">
-        <div class="section-header">Ma méthode</div>
-        <h2 class="section-title">Mon Approche</h2>
-        <div class="section-divider"></div>
-        
-        <div class="approach-grid">
-            <div class="approach-item">
-                <div class="approach-number">01</div>
-                <h3 class="approach-title">Analyse Fondamentale</h3>
-                <p class="approach-description">Étude approfondie des business models, KPIs et catalyseurs de croissance.</p>
-            </div>
-            
-            <div class="approach-item">
-                <div class="approach-number">02</div>
-                <h3 class="approach-title">Data-Driven</h3>
-                <p class="approach-description">Décisions basées sur les données financières, techniques et macroéconomiques.</p>
-            </div>
-            
-            <div class="approach-item">
-                <div class="approach-number">03</div>
-                <h3 class="approach-title">Gestion du Risque</h3>
-                <p class="approach-description">Conscience permanente du risk/reward et des scénarios alternatifs.</p>
-            </div>
-            
-            <div class="approach-item">
-                <div class="approach-number">04</div>
-                <h3 class="approach-title">Apprentissage Continu</h3>
-                <p class="approach-description">Veille quotidienne et analyse post-mortem systématique.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Compétences Section -->
-    <section id="competences">
-        <div class="section-header">Expertise</div>
-        <h2 class="section-title">Compétences</h2>
-        <div class="section-divider"></div>
-        
-        <div class="skills-grid">
-            <div class="skill-category">
-                <h3>Analyse de Données</h3>
-                <ul>
-                    <li>Excel Avancé (TCD, VBA)</li>
-                    <li>Python (pandas, numpy)</li>
-                    <li>SAP Analytics Cloud</li>
-                </ul>
-            </div>
-            
-            <div class="skill-category">
-                <h3>Marchés Financiers</h3>
-                <ul>
-                    <li>Analyse fondamentale</li>
-                    <li>Suivi macro (Fed, BCE)</li>
-                    <li>Produits dérivés</li>
-                </ul>
-            </div>
-            
-            <div class="skill-category">
-                <h3>Outils Professionnels</h3>
-                <ul>
-                    <li>Bloomberg Terminal</li>
-                    <li>Interactive Brokers</li>
-                    <li>Financial Times, Bloomberg</li>
-                </ul>
-            </div>
-            
-            <div class="skill-category">
-                <h3>Langues</h3>
-                <ul>
-                    <li>Français (natif)</li>
-                    <li>Anglais (professionnel)</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Analyses Section -->
-    <section id="analyses">
-        <div class="section-header">Projets</div>
-        <h2 class="section-title">Analyses de Marchés</h2>
-        <div class="section-divider"></div>
-        
-        <p style="color: var(--color-secondary); font-size: 1.1rem; margin-top: 2rem;">
-            Trois analyses récentes menées de manière autonome autour des publications de résultats (earnings season, octobre 2025).
-        </p>
-        
-        <div class="analyses-grid">
-            <!-- AMD -->
-            <div class="analysis-card">
-                <div class="analysis-header">
-                    <div class="analysis-number">01</div>
-                    <div class="analysis-info">
-                        <h3>AMD</h3>
-                        <p class="analysis-subtitle">Advanced Micro Devices — Avant earnings Q3 2025</p>
-                    </div>
+            <div class="about-grid fade-in">
+                <div class="about-text">
+                    <p>Étudiant passionné par les marchés financiers, je combine formation académique rigoureuse et pratique autodidacte. Mon expérience internationale au Portugal m'a enseigné l'adaptabilité et la prise de décision rapide dans des environnements changeants.</p>
+                    
+                    <p>Je pratique l'analyse de marchés de manière autonome : recherche fondamentale, suivi des earnings, veille macroéconomique. Ma conviction : l'excellence en trading nécessite curiosité constante et discipline sans faille.</p>
                 </div>
                 
-                <div class="analysis-content">
-                    <div class="analysis-row">
-                        <div class="analysis-label">Thèse</div>
-                        <div class="analysis-text">Position d'AMD dans l'IA (MI300 chips) et data centers</div>
-                    </div>
-                    <div class="analysis-row">
-                        <div class="analysis-label">Catalyseurs</div>
-                        <div class="analysis-text">Croissance data centers IA • Part de marché CPU serveurs • Guidance Q4 attendue forte</div>
-                    </div>
-                    <div class="analysis-row">
-                        <div class="analysis-label">Risques</div>
-                        <div class="analysis-text">Concurrence NVIDIA dominante • Cycle des semi-conducteurs • Valorisation élevée</div>
-                    </div>
-                    <div class="analysis-row">
-                        <div class="analysis-label">Approche</div>
-                        <div class="analysis-text">Analyse fondamentale (P/E, revenus) • Positionnement vs NVDA/INTC • Sentiment pré-earnings</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Pinterest -->
-            <div class="analysis-card">
-                <div class="analysis-header">
-                    <div class="analysis-number">02</div>
-                    <div class="analysis-info">
-                        <h3>Pinterest</h3>
-                        <p class="analysis-subtitle">PINS — Earnings season tech</p>
-                    </div>
-                </div>
-                
-                <div class="analysis-content">
-                    <div class="analysis-row">
-                        <div class="analysis-label">Thèse</div>
-                        <div class="analysis-text">Potentiel de monétisation utilisateurs + croissance publicitaire</div>
-                    </div>
-                    <div class="analysis-row">
-                        <div class="analysis-label">Catalyseurs</div>
-                        <div class="analysis-text">Audience qualifiée (intention d'achat) • Amélioration ARPU • Croissance internationale</div>
-                    </div>
-                    <div class="analysis-row">
-                        <div class="analysis-label">Risques</div>
-                        <div class="analysis-text">Ralentissement croissance utilisateurs • Concurrence META/SNAP • Sensibilité budget pub</div>
-                    </div>
-                    <div class="analysis-row">
-                        <div class="analysis-label">Approche</div>
-                        <div class="analysis-text">Comparaison métriques vs META/SNAP • Évolution KPIs (MAU, ARPU)</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Duolingo -->
-            <div class="analysis-card">
-                <div class="analysis-header">
-                    <div class="analysis-number">03</div>
-                    <div class="analysis-info">
-                        <h3>Duolingo</h3>
-                        <p class="analysis-subtitle">DUOL — EdTech & IA</p>
-                    </div>
-                </div>
-                
-                <div class="analysis-content">
-                    <div class="analysis-row">
-                        <div class="analysis-label">Thèse</div>
-                        <div class="analysis-text">Leader EdTech + intégration IA (GPT-4) dans l'apprentissage</div>
-                    </div>
-                    <div class="analysis-row">
-                        <div class="analysis-label">Catalyseurs</div>
-                        <div class="analysis-text">Abonnements premium • Expansion internationale • Gamification & rétention</div>
-                    </div>
-                    <div class="analysis-row">
-                        <div class="analysis-label">Risques</div>
-                        <div class="analysis-text">Coût d'acquisition utilisateurs (CAC) • Taux conversion freemium→premium • Marge opérationnelle</div>
-                    </div>
-                    <div class="analysis-row">
-                        <div class="analysis-label">Approche</div>
-                        <div class="analysis-text">Veille concurrentielle vs Babbel, Rosetta Stone</div>
+                <div>
+                    <div class="quote">
+                        "Transformer les données en opportunités à travers une analyse rigoureuse et une exécution disciplinée."
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Mindset Section -->
-    <section id="mindset">
-        <div class="section-header">Philosophie</div>
-        <h2 class="section-title">Mindset de Trading</h2>
-        <div class="section-divider"></div>
-        
-        <div class="mindset-grid">
-            <div class="mindset-item">
-                <h4>Discipline</h4>
-                <p>Process rigoureux et décisions rationnelles, sans émotion</p>
+    <!-- Track Visual Selector -->
+    <section id="track" class="track-visual-section">
+        <div class="track-container">
+            <div class="track-side track-left" id="trackLeft" onmouseenter="expandTrack('left')" onmouseleave="resetTracks()">
+                <div class="track-image-overlay"></div>
+                <div class="track-title">Costume Cravate</div>
+                <div class="track-details" id="detailsLeft">
+                    <h3>ON TRACK</h3>
+                    <div class="detail-item">
+                        <h4>Analyse Fondamentale</h4>
+                        <p>Étude approfondie des business models, KPIs et catalyseurs</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Data-Driven</h4>
+                        <p>Décisions basées sur données financières et macro</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Gestion du Risque</h4>
+                        <p>Conscience permanente du risk/reward</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Trading Discipline</h4>
+                        <p>Process rigoureux, documentation, humilité</p>
+                    </div>
+                    <div class="track-cta" onclick="showTrack('on')">
+                        Voir mes analyses →
+                    </div>
+                </div>
             </div>
             
-            <div class="mindset-item">
-                <h4>Documentation</h4>
-                <p>Journal de trading avec analyse post-mortem systématique</p>
-            </div>
-            
-            <div class="mindset-item">
-                <h4>Focus Risk/Reward</h4>
-                <p>Toujours évaluer le downside avant l'upside</p>
-            </div>
-            
-            <div class="mindset-item">
-                <h4>Humilité</h4>
-                <p>Les marchés ont toujours raison. Accepter ses erreurs</p>
-            </div>
-            
-            <div class="mindset-item">
-                <h4>Adaptabilité</h4>
-                <p>Savoir pivoter selon les conditions de marché</p>
-            </div>
-            
-            <div class="mindset-item">
-                <h4>Curiosité</h4>
-                <p>Comprendre le 'pourquoi' derrière chaque mouvement</p>
+            <div class="track-side track-right" id="trackRight" onmouseenter="expandTrack('right')" onmouseleave="resetTracks()">
+                <div class="track-image-overlay"></div>
+                <div class="track-title">Tenue Décontractée</div>
+                <div class="track-details" id="detailsRight">
+                    <h3>OFF TRACK</h3>
+                    <div class="detail-item">
+                        <h4>Kitesurf</h4>
+                        <p>Passion pour les sports de glisse et le vent</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Karting & F1</h4>
+                        <p>Adrénaline, compétition et passion mécanique</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Musique</h4>
+                        <p>Écoute et mix - DJ amateur</p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>Voyages & Convivialité</h4>
+                        <p>Explorer le monde et créer de la bonne humeur</p>
+                    </div>
+                    <div class="track-cta" onclick="showTrack('off')">
+                        Découvrir mon univers →
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- ON TRACK Section -->
+    <div id="onTrack">
+        <!-- Approche -->
+        <section class="on-track">
+            <div class="container">
+                <div class="section-label">Ma méthode</div>
+                <h2 class="section-title">Mon Approche</h2>
+                <div class="section-divider"></div>
+                
+                <div class="approach-grid">
+                    <div class="approach-card fade-in">
+                        <div class="approach-number">01</div>
+                        <h3 class="approach-title">Analyse Fondamentale</h3>
+                        <p class="approach-description">Étude approfondie des business models, KPIs et catalyseurs de croissance.</p>
+                    </div>
+                    
+                    <div class="approach-card fade-in">
+                        <div class="approach-number">02</div>
+                        <h3 class="approach-title">Data-Driven</h3>
+                        <p class="approach-description">Décisions basées sur les données financières, techniques et macroéconomiques.</p>
+                    </div>
+                    
+                    <div class="approach-card fade-in">
+                        <div class="approach-number">03</div>
+                        <h3 class="approach-title">Gestion du Risque</h3>
+                        <p class="approach-description">Conscience permanente du risk/reward et des scénarios alternatifs.</p>
+                    </div>
+                    
+                    <div class="approach-card fade-in">
+                        <div class="approach-number">04</div>
+                        <h3 class="approach-title">Apprentissage Continu</h3>
+                        <p class="approach-description">Veille quotidienne et analyse post-mortem systématique.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analyses Section -->
+        <section id="analyses" class="analyses-section">
+            <div class="container">
+                <div class="section-label">Projets</div>
+                <h2 class="section-title">Analyses de Marchés</h2>
+                <div class="section-divider"></div>
+                
+                <p style="font-size: 1.2rem; color: var(--color-text-dim); margin-bottom: 2rem;">
+                    Trois analyses récentes menées de manière autonome autour des publications de résultats (earnings season, octobre 2025).
+                </p>
+                
+                <div class="analyses-grid">
+                    <!-- AMD -->
+                    <div class="analysis-card fade-in">
+                        <div class="analysis-header">
+                            <div class="analysis-number">01</div>
+                            <div class="analysis-info">
+                                <h3>AMD</h3>
+                                <p class="analysis-subtitle">Advanced Micro Devices — Avant earnings Q3 2025</p>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-content">
+                            <div class="analysis-row">
+                                <div class="analysis-label">Thèse</div>
+                                <div class="analysis-text">Position d'AMD dans l'IA (MI300 chips) et data centers</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Catalyseurs</div>
+                                <div class="analysis-text">Croissance data centers IA • Part de marché CPU serveurs • Guidance Q4 attendue forte</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Risques</div>
+                                <div class="analysis-text">Concurrence NVIDIA dominante • Cycle des semi-conducteurs • Valorisation élevée</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Approche</div>
+                                <div class="analysis-text">Analyse fondamentale (P/E, revenus) • Positionnement vs NVDA/INTC • Sentiment pré-earnings</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pinterest -->
+                    <div class="analysis-card fade-in">
+                        <div class="analysis-header">
+                            <div class="analysis-number">02</div>
+                            <div class="analysis-info">
+                                <h3>Pinterest</h3>
+                                <p class="analysis-subtitle">PINS — Earnings season tech</p>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-content">
+                            <div class="analysis-row">
+                                <div class="analysis-label">Thèse</div>
+                                <div class="analysis-text">Potentiel de monétisation utilisateurs + croissance publicitaire</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Catalyseurs</div>
+                                <div class="analysis-text">Audience qualifiée (intention d'achat) • Amélioration ARPU • Croissance internationale</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Risques</div>
+                                <div class="analysis-text">Ralentissement croissance utilisateurs • Concurrence META/SNAP • Sensibilité budget pub</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Approche</div>
+                                <div class="analysis-text">Comparaison métriques vs META/SNAP • Évolution KPIs (MAU, ARPU)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Duolingo -->
+                    <div class="analysis-card fade-in">
+                        <div class="analysis-header">
+                            <div class="analysis-number">03</div>
+                            <div class="analysis-info">
+                                <h3>Duolingo</h3>
+                                <p class="analysis-subtitle">DUOL — EdTech & IA</p>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-content">
+                            <div class="analysis-row">
+                                <div class="analysis-label">Thèse</div>
+                                <div class="analysis-text">Leader EdTech + intégration IA (GPT-4) dans l'apprentissage</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Catalyseurs</div>
+                                <div class="analysis-text">Abonnements premium • Expansion internationale • Gamification & rétention</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Risques</div>
+                                <div class="analysis-text">Coût d'acquisition utilisateurs (CAC) • Taux conversion freemium→premium • Marge opérationnelle</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Approche</div>
+                                <div class="analysis-text">Veille concurrentielle vs Babbel, Rosetta Stone</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mindset Section -->
+        <section id="mindset" class="mindset-section">
+            <div class="container">
+                <div class="section-label">Philosophie</div>
+                <h2 class="section-title">Mindset de Trading</h2>
+                <div class="section-divider"></div>
+                
+                <div class="mindset-grid">
+                    <div class="mindset-item fade-in">
+                        <h4>Discipline</h4>
+                        <p>Process rigoureux et décisions rationnelles, sans émotion</p>
+                    </div>
+                    
+                    <div class="mindset-item fade-in">
+                        <h4>Documentation</h4>
+                        <p>Journal de trading avec analyse post-mortem systématique</p>
+                    </div>
+                    
+                    <div class="mindset-item fade-in">
+                        <h4>Focus Risk/Reward</h4>
+                        <p>Toujours évaluer le downside avant l'upside</p>
+                    </div>
+                    
+                    <div class="mindset-item fade-in">
+                        <h4>Humilité</h4>
+                        <p>Les marchés ont toujours raison. Accepter ses erreurs</p>
+                    </div>
+                    
+                    <div class="mindset-item fade-in">
+                        <h4>Adaptabilité</h4>
+                        <p>Savoir pivoter selon les conditions de marché</p>
+                    </div>
+                    
+                    <div class="mindset-item fade-in">
+                        <h4>Curiosité</h4>
+                        <p>Comprendre le 'pourquoi' derrière chaque mouvement</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- OFF TRACK Section -->
+    <div id="offTrack" class="hidden-track">
+        <!-- Hobbies -->
+        <section class="off-track">
+            <div class="container">
+                <div class="section-label">Côté personnel</div>
+                <h2 class="section-title">Off Track</h2>
+                <div class="section-divider"></div>
+                
+                <div class="hobbies-grid">
+                    <div class="hobby-card fade-in">
+                        <div class="hobby-icon">🏄</div>
+                        <h3 class="hobby-title">Kitesurf</h3>
+                        <p class="hobby-description">Passion pour les sports de glisse et le vent</p>
+                    </div>
+                    
+                    <div class="hobby-card fade-in">
+                        <div class="hobby-icon">🏎️</div>
+                        <h3 class="hobby-title">Karting</h3>
+                        <p class="hobby-description">Adrénaline et compétition sur circuit</p>
+                    </div>
+                    
+                    <div class="hobby-card fade-in">
+                        <div class="hobby-icon">🎵</div>
+                        <h3 class="hobby-title">Musique</h3>
+                        <p class="hobby-description">Écoute et mix - DJ amateur</p>
+                    </div>
+                    
+                    <div class="hobby-card fade-in">
+                        <div class="hobby-icon">✈️</div>
+                        <h3 class="hobby-title">Voyages</h3>
+                        <p class="hobby-description">Explorer de nouvelles cultures</p>
+                    </div>
+                    
+                    <div class="hobby-card fade-in">
+                        <div class="hobby-icon">😄</div>
+                        <h3 class="hobby-title">Convivialité</h3>
+                        <p class="hobby-description">Créer de la bonne humeur autour de moi</p>
+                    </div>
+                    
+                    <div class="hobby-card fade-in">
+                        <div class="hobby-icon">🏁</div>
+                        <h3 class="hobby-title">F1</h3>
+                        <p class="hobby-description">Passionné de Formule 1</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portugal Experience -->
+        <section class="portugal-section">
+            <div class="container">
+                <div class="portugal-content fade-in">
+                    <div class="portugal-text">
+                        <h3>🇵🇹 Portugal</h3>
+                        <p>Expérience de 3 mois dans une école de kitesurf au Portugal. Une aventure qui m'a appris l'adaptabilité, la gestion de l'incertitude et le travail en équipe multiculturelle.</p>
+                        <p>Des compétences directement transposables au trading : prise de décision rapide, gestion du stress, et performance sous pression.</p>
+                    </div>
+                    <div class="portugal-image">
+                        📸 Photo Portugal
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <h2>Prêt à discuter ?</h2>
-        <p>Je suis disponible pour échanger sur les opportunités en finance de marché et assistant trader.</p>
-        <div class="contact-buttons">
-            <a href="mailto:maxgrelaud.pro@gmail.com" class="contact-button primary">Envoyer un email</a>
-            <a href="https://www.linkedin.com/in/max-grelaud/" target="_blank" class="contact-button">LinkedIn</a>
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Prêt à discuter ?</h2>
+            <p>Je suis disponible pour échanger sur les opportunités en finance de marché et assistant trader.</p>
+            <div class="contact-buttons">
+                <a href="mailto:maxgrelaud.pro@gmail.com" class="contact-button primary">Email</a>
+                <a href="https://www.linkedin.com/in/max-grelaud/" target="_blank" class="contact-button">LinkedIn</a>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
         <p>© 2025 Max Grelaud — Portfolio Assistant Trader</p>
-        <p style="margin-top: 0.5rem; font-size: 0.85rem;">Créé avec passion pour les marchés financiers</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Créé avec passion pour les marchés financiers</p>
     </footer>
 
     <script>
-        // Smooth scroll animation on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -100px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            // Observe all sections
-            document.querySelectorAll('section').forEach(section => {
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(30px)';
-                section.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-                observer.observe(section);
-            });
+        // Loading screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 1500);
         });
 
-        // Active nav link on scroll
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-links a');
+        // Hero Carousel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+        
+        setInterval(nextSlide, 4000);
+
+        // Track Visual Selector Animation
+        function expandTrack(side) {
+            const leftTrack = document.getElementById('trackLeft');
+            const rightTrack = document.getElementById('trackRight');
             
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
+            if (side === 'left') {
+                leftTrack.classList.add('expanded');
+                leftTrack.classList.remove('collapsed');
+                rightTrack.classList.add('collapsed');
+                rightTrack.classList.remove('expanded');
+            } else {
+                rightTrack.classList.add('expanded');
+                rightTrack.classList.remove('collapsed');
+                leftTrack.classList.add('collapsed');
+                leftTrack.classList.remove('expanded');
+            }
+        }
+        
+        function resetTracks() {
+            const leftTrack = document.getElementById('trackLeft');
+            const rightTrack = document.getElementById('trackRight');
+            
+            leftTrack.classList.remove('expanded', 'collapsed');
+            rightTrack.classList.remove('expanded', 'collapsed');
+        }
+
+        // Track Selector
+        function showTrack(track) {
+            const onTrack = document.getElementById('onTrack');
+            const offTrack = document.getElementById('offTrack');
+            const buttons = document.querySelectorAll('.track-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (track === 'on') {
+                onTrack.classList.remove('hidden-track');
+                offTrack.classList.add('hidden-track');
+                buttons[0].classList.add('active');
+            } else {
+                onTrack.classList.add('hidden-track');
+                offTrack.classList.remove('hidden-track');
+                buttons[1].classList.add('active');
+            }
+        }
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
             });
+        }, observerOptions);
 
-            navLinks.forEach(link => {
-                link.style.color = 'var(--color-secondary)';
-                if (link.getAttribute('href').slice(1) === current) {
-                    link.style.color = 'var(--color-primary)';
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Hide/show navbar on scroll
+        let lastScroll = 0;
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
         });
