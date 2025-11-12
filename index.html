@@ -53,11 +53,96 @@
             visibility: hidden;
         }
 
-        .loading-text {
-            font-size: 3rem;
-            font-weight: 700;
+        /* Loading Animation - Split letters */
+        .loading-text-container {
+            display: flex;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
             color: var(--color-accent);
-            animation: pulse 1.5s ease-in-out infinite;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .letter {
+            display: inline-block;
+            position: relative;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .letter.static {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .letter.insert {
+            opacity: 0;
+            transform: translateY(40px);
+            max-width: 0;
+            overflow: hidden;
+            animation: slideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+        }
+
+        .letter.insert-ax:nth-of-type(2) {
+            animation-delay: 0.6s;
+        }
+
+        .letter.insert-ax:nth-of-type(3) {
+            animation-delay: 0.7s;
+        }
+
+        .letter.insert-relaud:nth-of-type(6) {
+            animation-delay: 0.8s;
+        }
+
+        .letter.insert-relaud:nth-of-type(7) {
+            animation-delay: 0.85s;
+        }
+
+        .letter.insert-relaud:nth-of-type(8) {
+            animation-delay: 0.9s;
+        }
+
+        .letter.insert-relaud:nth-of-type(9) {
+            animation-delay: 0.95s;
+        }
+
+        .letter.insert-relaud:nth-of-type(10) {
+            animation-delay: 1s;
+        }
+
+        .letter.insert-relaud:nth-of-type(11) {
+            animation-delay: 1.05s;
+        }
+
+        .letter.space {
+            width: 0.3em;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+                max-width: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                max-width: 1em;
+            }
         }
 
         @keyframes pulse {
@@ -310,7 +395,7 @@
         .track-right {
             flex: 1;
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                        url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&q=80');
+                        url('kitesurf.jpg');
             background-size: cover;
             background-position: center;
         }
@@ -359,7 +444,7 @@
 
         .track-right .track-details {
             right: auto;
-            left: 0;
+            left: 5%;
         }
 
         .track-details h3 {
@@ -419,6 +504,10 @@
         .track-side.expanded .track-title {
             left: 30%;
             font-size: clamp(1.5rem, 3vw, 3rem);
+        }
+
+        .track-right.expanded .track-title {
+            left: 60%;
         }
 
         .track-side.collapsed .track-title {
@@ -732,11 +821,244 @@
             line-height: 1.7;
         }
 
+        /* Tech Stack Logos Transition (bande entre sections) */
+        .tech-stack-transition {
+            background: var(--color-dark);
+            padding: 1.5rem 0;
+            overflow: hidden;
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .tech-transition-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tech-transition-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo-loop-container {
+            width: 100%;
+            overflow: hidden;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .logo-loop-container::before,
+        .logo-loop-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 150px;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .logo-loop-container::before {
+            left: 0;
+            background: linear-gradient(to right, var(--color-dark), transparent);
+        }
+
+        .logo-loop-container::after {
+            right: 0;
+            background: linear-gradient(to left, var(--color-dark), transparent);
+        }
+
+        .logo-loop-track {
+            display: flex;
+            width: fit-content;
+            animation: logoScroll 30s linear infinite;
+        }
+
+        .logo-loop-track:hover {
+            animation-play-state: paused;
+        }
+
+        .logo-loop-sequence {
+            display: flex;
+            gap: 5rem;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .tech-logo {
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            padding: 1rem;
+            background: var(--color-primary);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            transition: all 0.3s;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            position: relative;
+            gap: 0.5rem;
+        }
+
+        .tech-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: translateY(-10px) scale(1.1);
+            border-color: var(--color-accent);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            padding-bottom: 2.5rem;
+        }
+
+        .tech-logo img,
+        .tech-logo svg {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .tech-logo svg {
+            color: var(--color-accent);
+        }
+
+        .tech-name {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--color-accent);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tech-logo:hover .tech-name {
+            opacity: 1;
+        }
+
+        .tech-spacer {
+            width: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        @keyframes logoScroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Book Section */
+        .book-section {
+            background: var(--color-primary);
+            padding: 8rem 3rem;
+        }
+
+        .book-content {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 6rem;
+            align-items: start;
+            margin-top: 4rem;
+        }
+
+        .book-cover {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2/3;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .book-cover:hover {
+            transform: translateY(-10px) rotateY(5deg);
+            box-shadow: 0 30px 80px rgba(0, 255, 136, 0.3);
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-info h3 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .book-author {
+            font-size: 1.3rem;
+            color: var(--color-accent);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .book-description {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--color-dark);
+            border-left: 3px solid var(--color-accent);
+        }
+
+        .book-description p {
+            font-size: 1.1rem;
+            color: var(--color-text-dim);
+            line-height: 1.8;
+        }
+
+        .book-learnings {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .learning-item {
+            padding: 2rem;
+            background: var(--color-dark);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s;
+        }
+
+        .learning-item:hover {
+            border-color: var(--color-accent);
+            transform: translateX(10px);
+        }
+
+        .learning-item h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .learning-item p {
+            color: var(--color-text-dim);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
         /* Contact Section */
         .contact {
             background: var(--color-primary);
             text-align: center;
-            padding: 8rem 3rem;
+            padding: 4rem 3rem 3rem;
+            min-height: 70vh;
         }
 
         .contact h2 {
@@ -847,6 +1169,16 @@
             .track-side.expanded {
                 flex: 2;
             }
+
+            .book-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .book-cover {
+                max-width: 350px;
+                margin: 0 auto;
+            }
         }
 
         @media (max-width: 768px) {
@@ -905,7 +1237,19 @@
 <body>
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
-        <div class="loading-text">MG</div>
+        <div class="loading-text-container">
+            <span class="letter static">M</span>
+            <span class="letter insert insert-ax">A</span>
+            <span class="letter insert insert-ax">X</span>
+            <span class="letter space"> </span>
+            <span class="letter static">G</span>
+            <span class="letter insert insert-relaud">R</span>
+            <span class="letter insert insert-relaud">E</span>
+            <span class="letter insert insert-relaud">L</span>
+            <span class="letter insert insert-relaud">A</span>
+            <span class="letter insert insert-relaud">U</span>
+            <span class="letter insert insert-relaud">D</span>
+        </div>
     </div>
 
     <!-- Navigation -->
@@ -913,10 +1257,6 @@
         <div class="nav-container">
             <a href="#" class="logo">MG</a>
             <ul class="nav-links">
-                <li><a href="#about">À propos</a></li>
-                <li><a href="#track">Track</a></li>
-                <li><a href="#analyses">Analyses</a></li>
-                <li><a href="#mindset">Mindset</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -974,7 +1314,7 @@
                 <div class="track-image-overlay"></div>
                 <div class="track-title">Costume Cravate</div>
                 <div class="track-details" id="detailsLeft">
-                    <h3>ON TRACK</h3>
+                    <h3>Pro</h3>
                     <div class="detail-item">
                         <h4>Analyse Fondamentale</h4>
                         <p>Étude approfondie des business models, KPIs et catalyseurs</p>
@@ -991,9 +1331,6 @@
                         <h4>Trading Discipline</h4>
                         <p>Process rigoureux, documentation, humilité</p>
                     </div>
-                    <div class="track-cta" onclick="showTrack('on')">
-                        Voir mes analyses →
-                    </div>
                 </div>
             </div>
             
@@ -1001,7 +1338,7 @@
                 <div class="track-image-overlay"></div>
                 <div class="track-title">Tenue Décontractée</div>
                 <div class="track-details" id="detailsRight">
-                    <h3>OFF TRACK</h3>
+                    <h3>Perso</h3>
                     <div class="detail-item">
                         <h4>Kitesurf</h4>
                         <p>Passion pour les sports de glisse et le vent</p>
@@ -1017,9 +1354,6 @@
                     <div class="detail-item">
                         <h4>Voyages & Convivialité</h4>
                         <p>Explorer le monde et créer de la bonne humeur</p>
-                    </div>
-                    <div class="track-cta" onclick="showTrack('off')">
-                        Découvrir mon univers →
                     </div>
                 </div>
             </div>
@@ -1208,6 +1542,42 @@
                 </div>
             </div>
         </section>
+
+        <!-- Book Section -->
+        <section class="book-section">
+            <div class="container">
+                <div class="section-label">Apprentissage</div>
+                <h2 class="section-title">Mon Livre du Moment</h2>
+                <div class="section-divider"></div>
+                
+                <div class="book-content fade-in">
+                    <div class="book-cover">
+                        <img src="book_cover.jpg" alt="Trading the Measured Move">
+                    </div>
+                    
+                    <div class="book-info">
+                        <h3>Trading the Measured Move</h3>
+                        <p class="book-author">David Halsey</p>
+                        
+                        <div class="book-description">
+                            <p>Un guide pratique sur les patterns de continuation et les mouvements mesurés dans le trading. Ce livre offre une approche technique rigoureuse pour identifier et exploiter les opportunités de trading à court terme.</p>
+                        </div>
+                        
+                        <div class="book-learnings">
+                            <div class="learning-item">
+                                <h4>Ce que j'en tire</h4>
+                                <p>Apprentissage approfondi de la technique des mouvements mesurés et des patterns de continuation pour améliorer la précision de mes entrées.</p>
+                            </div>
+                            
+                            <div class="learning-item">
+                                <h4>Application pratique</h4>
+                                <p>Entraînement au scalping en utilisant cette technique sur les marchés rapides pour développer ma réactivité et ma discipline d'exécution.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- OFF TRACK Section -->
@@ -1288,6 +1658,93 @@
         </div>
     </section>
 
+    <!-- Tech Stack Logos Transition -->
+    <div class="tech-stack-transition">
+        <div class="tech-transition-header">
+            <h3>Compétences Techniques</h3>
+        </div>
+        <div class="logo-loop-container">
+            <div class="logo-loop-track" id="logoTrack">
+                <div class="logo-loop-sequence">
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" />
+                        <span class="tech-name">Python</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" />
+                        <span class="tech-name">JavaScript</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" />
+                        <span class="tech-name">HTML5</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" />
+                        <span class="tech-name">CSS3</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/r/r-original.svg" alt="R" />
+                        <span class="tech-name">R</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matlab/matlab-original.svg" alt="MATLAB" />
+                        <span class="tech-name">MATLAB</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" />
+                        <span class="tech-name">Java</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" />
+                        <span class="tech-name">C++</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="C#" />
+                        <span class="tech-name">C#</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" />
+                        <span class="tech-name">Node.js</span>
+                    </div>
+                    <div class="tech-logo">
+                        <svg viewBox="0 0 48 48" fill="currentColor">
+                            <rect x="4" y="4" width="40" height="40" rx="4" fill="#217346"/>
+                            <text x="24" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="white">X</text>
+                        </svg>
+                        <span class="tech-name">Excel</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL" />
+                        <span class="tech-name">SQL</span>
+                    </div>
+                    <div class="tech-logo">
+                        <svg viewBox="0 0 48 48" fill="currentColor">
+                            <rect x="4" y="4" width="40" height="40" rx="4" fill="#0FAAFF"/>
+                            <text x="24" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="white">SAP</text>
+                        </svg>
+                        <span class="tech-name">SAP Analytics</span>
+                    </div>
+                    <div class="tech-logo">
+                        <svg viewBox="0 0 48 48" fill="currentColor">
+                            <rect x="4" y="4" width="40" height="40" rx="4" fill="#F2C811"/>
+                            <text x="24" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="black">BI</text>
+                        </svg>
+                        <span class="tech-name">Power BI</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" />
+                        <span class="tech-name">Git</span>
+                    </div>
+                    <div class="tech-logo">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" />
+                        <span class="tech-name">GitHub</span>
+                    </div>
+                    <div class="tech-spacer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <p>© 2025 Max Grelaud — Portfolio Assistant Trader</p>
@@ -1295,11 +1752,27 @@
     </footer>
 
     <script>
-        // Loading screen
+        // Logo loop animation - duplication pour effet infini
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.getElementById('logoTrack');
+            if (track) {
+                const sequence = track.querySelector('.logo-loop-sequence');
+                if (sequence) {
+                    // Dupliquer la séquence pour créer une boucle infinie
+                    const clone = sequence.cloneNode(true);
+                    track.appendChild(clone);
+                }
+            }
+        });
+
+        // Loading screen - disparition après l'animation
         window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            
+            // Disparaître après toutes les animations (1.7s animations + 0.5s buffer)
             setTimeout(() => {
-                document.getElementById('loadingScreen').classList.add('hidden');
-            }, 1500);
+                loadingScreen.classList.add('hidden');
+            }, 2200);
         });
 
         // Hero Carousel
