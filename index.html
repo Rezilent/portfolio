@@ -444,35 +444,32 @@
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             max-height: 85vh;
             overflow-y: auto;
-            background: transparent;  /* ← FOND TRANSPARENT */
+            background: transparent;
             backdrop-filter: blur(10px);
             border-radius: 8px;
-            /* Scrollbar à gauche */
             direction: rtl;
         }
 
-        /* Remettre le contenu dans le bon sens */
         .track-details > * {
             direction: ltr;
         }
 
-        /* Scrollbar verte transparente à GAUCHE */
         .track-details::-webkit-scrollbar {
             width: 8px;
         }
 
         .track-details::-webkit-scrollbar-track {
-            background: transparent;  /* ← Track transparent */
+            background: transparent;
             border-radius: 4px;
         }
 
         .track-details::-webkit-scrollbar-thumb {
-            background: rgba(0, 255, 136, 0.6);  /* ← Vert transparent (60% opacité) */
+            background: rgba(0, 255, 136, 0.6);
             border-radius: 4px;
         }
 
         .track-details::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 255, 136, 0.9);  /* ← Vert plus opaque au hover */
+            background: rgba(0, 255, 136, 0.9);
         }
 
         .track-right .track-details {
@@ -550,6 +547,11 @@
 
         .track-side.expanded .track-details {
             opacity: 1;
+        }
+
+        /* Indicateur "Tap to open" sur mobile uniquement */
+        .tap-indicator {
+            display: none;
         }
 
         /* ON TRACK Section */
@@ -1222,22 +1224,21 @@
             .track-side.expanded .track-details {
                 opacity: 1;
                 pointer-events: auto;
-                position: fixed;  /* ← Change absolute en fixed */
+                position: fixed;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 width: 90%;
                 max-width: 500px;
                 max-height: 85vh;
-                overflow-y: auto;
+                overflow-y: scroll !important;
+                -webkit-overflow-scrolling: touch;
                 padding: 2rem;
-                background: transparent;  /* ← TRANSPARENT au lieu de rgba(10, 10, 10, 0.9) */
+                background: transparent;
                 border: 2px solid var(--color-accent);
                 border-radius: 12px;
                 z-index: 1000;
                 direction: rtl;
-                overflow-y: scroll !important;  /* ← Force le scroll (au lieu de auto) */
-                -webkit-overflow-scrolling: touch;  /* ← Ajoute pour iOS */
             }
 
             .track-side.expanded .track-details > * {
@@ -1286,7 +1287,68 @@
                 font-size: 0.85rem !important;
                 line-height: 1.4;
             }
-        }
+
+            /* Indicateur mobile */
+            .tap-indicator {
+                display: flex;
+                position: absolute;
+                bottom: 2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 0.85rem;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                z-index: 10;
+                pointer-events: none;
+            }
+
+            .track-side.expanded .tap-indicator {
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            .track-side.expanded .tap-indicator {
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            /* Analyses : numéro au-dessus du titre sur mobile */
+            .analysis-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .analysis-number {
+                font-size: 3rem;
+            }
+            
+            .quote {
+                text-align: center;
+            }
+
+            /*@keyframes tapPulse {
+                0%, 100% {
+                    transform: translateX(-50%) scale(1);
+                    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+                }
+                50% {
+                    transform: translateX(-50%) scale(1.05);
+                    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.6);
+                }
+            }
+
+            @keyframes tapBounce {
+                0%, 100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-5px);
+                }
+            }
+        }*/
 
         @media (max-width: 768px) {
             .nav-links {
@@ -1439,6 +1501,7 @@
                         <p>Veille quotidienne et analyse post-mortem systématique</p>
                     </div>
                 </div>
+                <div class="tap-indicator">Toucher pour ouvrir</div>
             </div>
             
             <div class="track-side track-right" id="trackRight" onmouseenter="expandTrack('right')" onmouseleave="resetTracks()">
@@ -1463,6 +1526,7 @@
                         <p>Forcément, qui n'aime pas voyager ? Mais le plus important c'est que j'aime partagé ces moments avec mes proches, j'aime leurs faire plaisir et les faire rires. (J'avoue sur celle la je suis pas très original mais il fallait que j'en parle).</p>
                     </div>
                 </div>
+                <div class="tap-indicator">Toucher pour ouvrir</div>
             </div>
         </div>
     </section>
