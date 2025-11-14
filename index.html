@@ -1236,6 +1236,8 @@
                 border-radius: 12px;
                 z-index: 1000;
                 direction: rtl;
+                overflow-y: scroll !important;  /* ← Force le scroll (au lieu de auto) */
+                -webkit-overflow-scrolling: touch;  /* ← Ajoute pour iOS */
             }
 
             .track-side.expanded .track-details > * {
@@ -1928,19 +1930,74 @@
                 }
             });
             
-            leftTrack.addEventListener('click', () => toggleTrackMobile(leftTrack));
+            // Mobile : empêcher la fermeture quand on clique dans le menu
+            const detailsLeft = document.getElementById('detailsLeft');
+            const detailsRight = document.getElementById('detailsRight');
+
+            // Empêcher la propagation des clics dans les détails
+            if (detailsLeft) {
+                detailsLeft.addEventListener('click', (e) => {
+                    if (isMobile()) {
+                        e.stopPropagation();  // Empêche la fermeture
+                    }
+                });
+                detailsLeft.addEventListener('touchstart', (e) => {
+                    if (isMobile()) {
+                        e.stopPropagation();  // Empêche la fermeture
+                    }
+                });
+            }
+
+            if (detailsRight) {
+                detailsRight.addEventListener('click', (e) => {
+                    if (isMobile()) {
+                        e.stopPropagation();  // Empêche la fermeture
+                    }
+                });
+                detailsRight.addEventListener('touchstart', (e) => {
+                    if (isMobile()) {
+                        e.stopPropagation();  // Empêche la fermeture
+                    }
+                });
+            }
+
+            // Mobile : ouvrir/fermer au clic sur le track
+            leftTrack.addEventListener('click', () => {
+                if (isMobile()) {
+                    toggleTrackMobile(leftTrack);
+                }
+            });
             leftTrack.addEventListener('touchstart', (e) => {
                 if (isMobile()) {
                     e.preventDefault();
                     toggleTrackMobile(leftTrack);
                 }
             });
-            
-            rightTrack.addEventListener('click', () => toggleTrackMobile(rightTrack));
+
+            rightTrack.addEventListener('click', () => {
+                if (isMobile()) {
+                    toggleTrackMobile(rightTrack);
+                }
+            });
             rightTrack.addEventListener('touchstart', (e) => {
                 if (isMobile()) {
                     e.preventDefault();
                     toggleTrackMobile(rightTrack);
+                }
+            });
+
+            // Fermer si on clique en dehors (sur l'overlay)
+            document.addEventListener('click', (e) => {
+                if (isMobile()) {
+                    const isClickInsideLeft = leftTrack.contains(e.target);
+                    const isClickInsideRight = rightTrack.contains(e.target);
+                    
+                    if (!isClickInsideLeft && leftTrack.classList.contains('expanded')) {
+                        leftTrack.classList.remove('expanded');
+                    }
+                    if (!isClickInsideRight && rightTrack.classList.contains('expanded')) {
+                        rightTrack.classList.remove('expanded');
+                    }
                 }
             });
         }
