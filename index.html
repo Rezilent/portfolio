@@ -1912,6 +1912,7 @@
         const rightTrack = document.getElementById('trackRight');
 
         if (leftTrack && rightTrack) {
+            // Desktop events
             leftTrack.addEventListener('mouseenter', () => {
                 if (!isMobile()) {
                     expandTrack('left');
@@ -1930,7 +1931,14 @@
                 }
             });
             
-            // Mobile : empêcher la fermeture quand on clique dans le menu
+            // ========== MOBILE LOGIC ========== 
+            
+            // Variables pour détecter scroll vs tap
+            let touchStartY = 0;
+            let touchStartTime = 0;
+            const SCROLL_THRESHOLD = 10; // pixels
+            const TAP_TIME_THRESHOLD = 200; // ms
+            
             const detailsLeft = document.getElementById('detailsLeft');
             const detailsRight = document.getElementById('detailsRight');
 
@@ -1938,68 +1946,110 @@
             if (detailsLeft) {
                 detailsLeft.addEventListener('click', (e) => {
                     if (isMobile()) {
-                        e.stopPropagation();  // Empêche la fermeture
+                        e.stopPropagation();
                     }
                 });
                 detailsLeft.addEventListener('touchstart', (e) => {
                     if (isMobile()) {
-                        e.stopPropagation();  // Empêche la fermeture
+                        e.stopPropagation();
                     }
-                });
+                }, { passive: true });
             }
 
             if (detailsRight) {
                 detailsRight.addEventListener('click', (e) => {
                     if (isMobile()) {
-                        e.stopPropagation();  // Empêche la fermeture
+                        e.stopPropagation();
                     }
                 });
                 detailsRight.addEventListener('touchstart', (e) => {
                     if (isMobile()) {
-                        e.stopPropagation();  // Empêche la fermeture
+                        e.stopPropagation();
+                    }
+                }, { passive: true });
+            }
+
+            // Fonction pour gérer l'ouverture/fermeture intelligente
+            function handleTrackTap(trackToToggle, otherTrack) {
+                if (!isMobile()) return;
+                
+                // Si l'autre menu est ouvert, on le ferme SANS ouvrir le nouveau
+                if (otherTrack.classList.contains('expanded')) {
+                    otherTrack.classList.remove('expanded');
+                    return;
+                }
+                
+                // Sinon, on toggle normalement
+                toggleTrackMobile(trackToToggle);
+            }
+
+            // Gérer touchstart/touchmove/touchend pour différencier scroll et tap
+            function setupTrackTouch(track, otherTrack) {
+                let isTouching = false;
+                let hasMoved = false;
+                
+                track.addEventListener('touchstart', (e) => {
+                    if (!isMobile()) return;
+                    
+                    // Ne pas intercepter si on touche les détails
+                    const details = track.querySelector('.track-details');
+                    if (details && details.contains(e.target)) {
+                        return;
+                    }
+                    
+                    isTouching = true;
+                    hasMoved = false;
+                    touchStartY = e.touches[0].clientY;
+                    touchStartTime = Date.now();
+                }, { passive: true });
+                
+                track.addEventListener('touchmove', (e) => {
+                    if (!isMobile() || !isTouching) return;
+                    
+                    const touchY = e.touches[0].clientY;
+                    const deltaY = Math.abs(touchY - touchStartY);
+                    
+                    // Si le doigt bouge de plus de SCROLL_THRESHOLD pixels, c'est un scroll
+                    if (deltaY > SCROLL_THRESHOLD) {
+                        hasMoved = true;
+                    }
+                }, { passive: true });
+                
+                track.addEventListener('touchend', (e) => {
+                    if (!isMobile() || !isTouching) return;
+                    
+                    isTouching = false;
+                    
+                    const touchDuration = Date.now() - touchStartTime;
+                    
+                    // C'est un TAP si le doigt n'a pas bougé et la durée est courte
+                    const isTap = !hasMoved && touchDuration < TAP_TIME_THRESHOLD;
+                    
+                    if (isTap) {
+                        e.preventDefault();
+                        handleTrackTap(track, otherTrack);
                     }
                 });
             }
 
-            // Mobile : ouvrir/fermer au clic sur le track
-            leftTrack.addEventListener('click', () => {
-                if (isMobile()) {
-                    toggleTrackMobile(leftTrack);
-                }
-            });
-            leftTrack.addEventListener('touchstart', (e) => {
-                if (isMobile()) {
-                    e.preventDefault();
-                    toggleTrackMobile(leftTrack);
-                }
-            });
+            // Appliquer aux deux tracks
+            setupTrackTouch(leftTrack, rightTrack);
+            setupTrackTouch(rightTrack, leftTrack);
 
-            rightTrack.addEventListener('click', () => {
-                if (isMobile()) {
-                    toggleTrackMobile(rightTrack);
+            // Fermer si on touche en dehors
+            document.addEventListener('touchend', (e) => {
+                if (!isMobile()) return;
+                
+                const isClickInsideLeft = leftTrack.contains(e.target);
+                const isClickInsideRight = rightTrack.contains(e.target);
+                
+                if (!isClickInsideLeft && leftTrack.classList.contains('expanded')) {
+                    leftTrack.classList.remove('expanded');
                 }
-            });
-            rightTrack.addEventListener('touchstart', (e) => {
-                if (isMobile()) {
-                    e.preventDefault();
-                    toggleTrackMobile(rightTrack);
+                if (!isClickInsideRight && rightTrack.classList.contains('expanded')) {
+                    rightTrack.classList.remove('expanded');
                 }
-            });
-
-            // Fermer si on clique en dehors (sur l'overlay)
-            document.addEventListener('click', (e) => {
-                if (isMobile()) {
-                    const isClickInsideLeft = leftTrack.contains(e.target);
-                    const isClickInsideRight = rightTrack.contains(e.target);
-                    
-                    if (!isClickInsideLeft && leftTrack.classList.contains('expanded')) {
-                        leftTrack.classList.remove('expanded');
-                    }
-                    if (!isClickInsideRight && rightTrack.classList.contains('expanded')) {
-                        rightTrack.classList.remove('expanded');
-                    }
-                }
-            });
+            }, { passive: true });
         }
 
         // Scroll animations
