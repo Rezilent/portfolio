@@ -343,6 +343,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 6rem;
             align-items: center;
+            text-align: justify;
         }
 
         .about-text p {
@@ -507,7 +508,7 @@
         }
 
         .track-right.expanded .track-title {
-            left: 60%;
+            left: 70%;
         }
 
         .track-side.collapsed .track-title {
@@ -999,6 +1000,11 @@
             font-weight: 900;
             color: var(--color-text);
             margin-bottom: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .book-info {
+            margin-top: -4rem;  /* ← Commence avec -2rem pour remonter */
         }
 
         .book-author {
@@ -1293,14 +1299,14 @@
             
             <div class="about-grid fade-in">
                 <div class="about-text">
-                    <p>Étudiant passionné par les marchés financiers, je combine formation académique rigoureuse et pratique autodidacte. Mon expérience internationale au Portugal m'a enseigné l'adaptabilité et la prise de décision rapide dans des environnements changeants.</p>
+                    <p>Étudiant en dernière année d'école d'ingénieur et montrant interet pour les marchés financiers, je combine à la fois formation académique financière trés complète et une pratique personnel. Je me forme continuellement au trading à travers la pratique, la lecture et l'analyse de cas réels.</p>
                     
-                    <p>Je pratique l'analyse de marchés de manière autonome : recherche fondamentale, suivi des earnings, veille macroéconomique. Ma conviction : l'excellence en trading nécessite curiosité constante et discipline sans faille.</p>
+                    <p>Ma curiosité m'amène à découvrir de nouvelles choses sur ce si grand domaine qu'est la finance de marché. Je suis quelqu'un de réactif tout en restant discipliné, et j'ai toujours une analyse sous le coude avant d'agir. Et surtout le plus important: ne jamais laisser les émotions dicter mes décisions. La FOMO n'a pas sa place dans mon trading.</p>
                 </div>
                 
                 <div>
                     <div class="quote">
-                        "Transformer les données en opportunités à travers une analyse rigoureuse et une exécution disciplinée."
+                        "La plus grande erreur des investisseurs est de croire que ce qui s'est passé récemment va perdurer."
                     </div>
                 </div>
             </div>
@@ -1317,19 +1323,19 @@
                     <h3>Pro</h3>
                     <div class="detail-item">
                         <h4>Analyse Fondamentale</h4>
-                        <p>Étude approfondie des business models, KPIs et catalyseurs</p>
+                        <p>Décisions basées sur les données financières: bilans, P/E ratios, données macro (taux, inflation) et indicateurs de marché</p>
                     </div>
                     <div class="detail-item">
                         <h4>Data-Driven</h4>
-                        <p>Décisions basées sur données financières et macro</p>
+                        <p>Décisions basées sur les données financières: bilans, P/E ratios, données macro (taux, inflation) et indicateurs de marché</p>
                     </div>
                     <div class="detail-item">
                         <h4>Gestion du Risque</h4>
-                        <p>Conscience permanente du risk/reward</p>
+                        <p>Conscience permanente du risk/reward et des scénarios alternatifs</p>
                     </div>
                     <div class="detail-item">
-                        <h4>Trading Discipline</h4>
-                        <p>Process rigoureux, documentation, humilité</p>
+                        <h4>Apprentissage Continu</h4>
+                        <p>Veille quotidienne et analyse post-mortem systématique</p>
                     </div>
                 </div>
             </div>
@@ -1341,19 +1347,19 @@
                     <h3>Perso</h3>
                     <div class="detail-item">
                         <h4>Kitesurf</h4>
-                        <p>Passion pour les sports de glisse et le vent</p>
+                        <p>Passion pour ce sport, c'est mon échapatoir. Meme si à chaque fois je me fais nettoyer les sinus à l'eau de mer, j'adore ça.</p>
                     </div>
                     <div class="detail-item">
                         <h4>Karting & F1</h4>
-                        <p>Adrénaline, compétition et passion mécanique</p>
+                        <p>Adrénaline, compétition et passion mécanique. J'adore ça aussi avec les amis c'est un supper moment (meme si le but c'est de leurs mettre 1seconde minimum). Et F1 je ne fais que suivre à la télé, sinon vous me connaitriez surement déjà.</p>
                     </div>
                     <div class="detail-item">
                         <h4>Musique</h4>
-                        <p>Écoute et mix - DJ amateur</p>
+                        <p>La fameuse question : "Et toi t'aimes quoi comme musique ?" amène à la fameuse réponse : "Oh moi... de tout !". Il ne faut pas regarder ma playlist sinon Mr Aznavour va se retourner dans sa tombe quand il va voir la musique qui suit la sienne.</p>
                     </div>
                     <div class="detail-item">
                         <h4>Voyages & Convivialité</h4>
-                        <p>Explorer le monde et créer de la bonne humeur</p>
+                        <p>Forcément, qui n'aime pas voyager ? Mais le plus important c'est que j'aime partagé ces moments avec mes proches, j'aime leurs faire plaisir et les faire rires. (J'avoue sur celle la je suis pas très original mais il fallait que j'en parle).</p>
                     </div>
                 </div>
             </div>
@@ -1362,7 +1368,7 @@
 
     <!-- ON TRACK Section -->
     <div id="onTrack">
-        <!-- Approche -->
+        <!-- Approche 
         <section class="on-track">
             <div class="container">
                 <div class="section-label">Ma méthode</div>
@@ -1373,29 +1379,30 @@
                     <div class="approach-card fade-in">
                         <div class="approach-number">01</div>
                         <h3 class="approach-title">Analyse Fondamentale</h3>
-                        <p class="approach-description">Étude approfondie des business models, KPIs et catalyseurs de croissance.</p>
+                        <p class="approach-description">Étude approfondie des business models, du secteur, de la concurrence et des actualités</p>
                     </div>
                     
                     <div class="approach-card fade-in">
                         <div class="approach-number">02</div>
                         <h3 class="approach-title">Data-Driven</h3>
-                        <p class="approach-description">Décisions basées sur les données financières, techniques et macroéconomiques.</p>
+                        <p class="approach-description">Décisions basées sur les données financières: bilans, P/E ratios, données macro (taux, inflation) et indicateurs de marché</p>
                     </div>
                     
                     <div class="approach-card fade-in">
                         <div class="approach-number">03</div>
                         <h3 class="approach-title">Gestion du Risque</h3>
-                        <p class="approach-description">Conscience permanente du risk/reward et des scénarios alternatifs.</p>
+                        <p class="approach-description">Conscience permanente du risk/reward et des scénarios alternatifs</p>
                     </div>
                     
                     <div class="approach-card fade-in">
                         <div class="approach-number">04</div>
                         <h3 class="approach-title">Apprentissage Continu</h3>
-                        <p class="approach-description">Veille quotidienne et analyse post-mortem systématique.</p>
+                        <p class="approach-description">Veille quotidienne et analyse post-mortem systématique</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </section>"
+        -->
 
         <!-- Analyses Section -->
         <section id="analyses" class="analyses-section">
@@ -1415,26 +1422,30 @@
                             <div class="analysis-number">01</div>
                             <div class="analysis-info">
                                 <h3>AMD</h3>
-                                <p class="analysis-subtitle">Advanced Micro Devices — Avant earnings Q3 2025</p>
+                                <p class="analysis-subtitle">Advanced Micro Devices | Avant earnings Q3 2025</p>
                             </div>
                         </div>
                         
                         <div class="analysis-content">
                             <div class="analysis-row">
                                 <div class="analysis-label">Thèse</div>
-                                <div class="analysis-text">Position d'AMD dans l'IA (MI300 chips) et data centers</div>
+                                <div class="analysis-text">Valorisation excessive sur le moment</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Catalyseurs</div>
-                                <div class="analysis-text">Croissance data centers IA • Part de marché CPU serveurs • Guidance Q4 attendue forte</div>
+                                <div class="analysis-text">Dominance écrasante de NVIDIA sur l'IA. Meme si très bon résultats Q3 => attente marché trop élevé </div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Risques</div>
-                                <div class="analysis-text">Concurrence NVIDIA dominante • Cycle des semi-conducteurs • Valorisation élevée</div>
+                                <div class="analysis-text">Le domaine marche trés fort sur le moment et ne cèsse de monté. Sujet "à la mode"</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Approche</div>
-                                <div class="analysis-text">Analyse fondamentale (P/E, revenus) • Positionnement vs NVDA/INTC • Sentiment pré-earnings</div>
+                                <div class="analysis-text">Analyse valorisation (P/E élevé vs croissance).Comparaison marges vs NVIDIA. Conscience du risque pré-earnings</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Décision</div>
+                                <div class="analysis-text">Position SHORT prise avant earnings Q3 2025 sur court terme</div>
                             </div>
                         </div>
                     </div>
@@ -1445,26 +1456,30 @@
                             <div class="analysis-number">02</div>
                             <div class="analysis-info">
                                 <h3>Pinterest</h3>
-                                <p class="analysis-subtitle">PINS — Earnings season tech</p>
+                                <p class="analysis-subtitle">PINS | Earnings season tech</p>
                             </div>
                         </div>
                         
                         <div class="analysis-content">
                             <div class="analysis-row">
                                 <div class="analysis-label">Thèse</div>
-                                <div class="analysis-text">Potentiel de monétisation utilisateurs + croissance publicitaire</div>
+                                <div class="analysis-text">Résultats solides mais guidance prix par action décevante + Monétisation des utilisateurs en croissance et croissance publicitaire</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Catalyseurs</div>
-                                <div class="analysis-text">Audience qualifiée (intention d'achat) • Amélioration ARPU • Croissance internationale</div>
+                                <div class="analysis-text">Audience qualifiée et amélioration ARPU + Amazon partnership + Shopping features + AI recommendations</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Risques</div>
-                                <div class="analysis-text">Ralentissement croissance utilisateurs • Concurrence META/SNAP • Sensibilité budget pub</div>
+                                <div class="analysis-text">Ralentissement croissance utilisateurs et concurrence META, Youtube, Tik Tok sur les dépenses publicitaires</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Approche</div>
-                                <div class="analysis-text">Comparaison métriques vs META/SNAP • Évolution KPIs (MAU, ARPU)</div>
+                                <div class="analysis-text">Compréhension du contexte et regard sur prix actuel face aux earnings Q3</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Décision</div>
+                                <div class="analysis-text">Position LONG prise sur long terme après la chute due à l'annonce des résultats</div>
                             </div>
                         </div>
                     </div>
@@ -1475,26 +1490,30 @@
                             <div class="analysis-number">03</div>
                             <div class="analysis-info">
                                 <h3>Duolingo</h3>
-                                <p class="analysis-subtitle">DUOL — EdTech & IA</p>
+                                <p class="analysis-subtitle">Duolingo Inc. | Post earnings Q3 2024</p>
                             </div>
                         </div>
                         
                         <div class="analysis-content">
                             <div class="analysis-row">
                                 <div class="analysis-label">Thèse</div>
-                                <div class="analysis-text">Leader EdTech + intégration IA (GPT-4) dans l'apprentissage</div>
+                                <div class="analysis-text">Leader de l'apprentissage mobile avec croissance exceptionnelle des utilisateurs (+54% DAU) et prix relativement bas</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Catalyseurs</div>
-                                <div class="analysis-text">Abonnements premium • Expansion internationale • Gamification & rétention</div>
+                                <div class="analysis-text">Croissance DAU record (37M) + Abonnés payants +47% + Marges EBITDA en expansion (24,7%)</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Risques</div>
-                                <div class="analysis-text">Coût d'acquisition utilisateurs (CAC) • Taux conversion freemium→premium • Marge opérationnelle</div>
+                                <div class="analysis-text"> Compétition avec l'IA générative gratuite (ChatGPT, Gemini...) facilitant l'apprentissage conversationnel</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Approche</div>
-                                <div class="analysis-text">Veille concurrentielle vs Babbel, Rosetta Stone</div>
+                                <div class="analysis-text">Comparaison vs concurrence IA + Analyse de fondamentaux solides</div>
+                            </div>
+                            <div class="analysis-row">
+                                <div class="analysis-label">Décision</div>
+                                <div class="analysis-text">Aucune position prise car risque structurel IA trop élevé. Suivi du cours pour apprentissage</div>
                             </div>
                         </div>
                     </div>
@@ -1512,22 +1531,22 @@
                 <div class="mindset-grid">
                     <div class="mindset-item fade-in">
                         <h4>Discipline</h4>
-                        <p>Process rigoureux et décisions rationnelles, sans émotion</p>
+                        <p>Process rigoureux et décisions rationnelles, en essayant de mettre de coté l'émotion (éviter la FOMO, ou le sentiment de vouloir plus)</p>
                     </div>
                     
                     <div class="mindset-item fade-in">
                         <h4>Documentation</h4>
-                        <p>Journal de trading avec analyse post-mortem systématique</p>
+                        <p>Suivi des news avec analyse post-mortem systématique. Et suivi des cours boursier</p>
                     </div>
                     
                     <div class="mindset-item fade-in">
                         <h4>Focus Risk/Reward</h4>
-                        <p>Toujours évaluer le downside avant l'upside</p>
+                        <p>Toujours évaluer le downside avant l'upside. Elaboration d'une stratégie de risque</p>
                     </div>
                     
                     <div class="mindset-item fade-in">
                         <h4>Humilité</h4>
-                        <p>Les marchés ont toujours raison. Accepter ses erreurs</p>
+                        <p>Les marchés ont toujours raison. Accepter ses erreurs et apprendre</p>
                     </div>
                     
                     <div class="mindset-item fade-in">
@@ -1537,7 +1556,7 @@
                     
                     <div class="mindset-item fade-in">
                         <h4>Curiosité</h4>
-                        <p>Comprendre le 'pourquoi' derrière chaque mouvement</p>
+                        <p>Comprendre le 'pourquoi' derrière chaque mouvement. Et suivre ce qu'il se passe.</p>
                     </div>
                 </div>
             </div>
@@ -1560,18 +1579,18 @@
                         <p class="book-author">David Halsey</p>
                         
                         <div class="book-description">
-                            <p>Un guide pratique sur les patterns de continuation et les mouvements mesurés dans le trading. Ce livre offre une approche technique rigoureuse pour identifier et exploiter les opportunités de trading à court terme.</p>
+                            <p>Un guide pratique sur la méthode des mouvements mesurés dans le trading. Ce livre montre comment identifier et exploiter les opportunités de trading à court terme.</p>
                         </div>
                         
                         <div class="book-learnings">
                             <div class="learning-item">
                                 <h4>Ce que j'en tire</h4>
-                                <p>Apprentissage approfondi de la technique des mouvements mesurés et des patterns de continuation pour améliorer la précision de mes entrées.</p>
+                                <p>Apprentissage  de la technique des mouvements mesurés et meilleur connaissance des marchés.</p>
                             </div>
                             
                             <div class="learning-item">
                                 <h4>Application pratique</h4>
-                                <p>Entraînement au scalping en utilisant cette technique sur les marchés rapides pour développer ma réactivité et ma discipline d'exécution.</p>
+                                <p>Entraînement au scalping en utilisant cette technique en m5/m15 après une analyse en dayli/weekly pour identifier la tendence.</p>
                             </div>
                         </div>
                     </div>
@@ -1650,7 +1669,7 @@
     <section id="contact" class="contact">
         <div class="container">
             <h2>Prêt à discuter ?</h2>
-            <p>Je suis disponible pour échanger sur les opportunités en finance de marché et assistant trader.</p>
+            <p>Je suis disponible pour échanger sur les opportunités en tant qu'assistant trader et en finance de marché.</p>
             <div class="contact-buttons">
                 <a href="mailto:maxgrelaud.pro@gmail.com" class="contact-button primary">Email</a>
                 <a href="https://www.linkedin.com/in/max-grelaud/" target="_blank" class="contact-button">LinkedIn</a>
@@ -1748,7 +1767,7 @@
     <!-- Footer -->
     <footer>
         <p>© 2025 Max Grelaud — Portfolio Assistant Trader</p>
-        <p style="margin-top: 1rem; font-size: 0.9rem;">Créé avec passion pour les marchés financiers</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Créé avec passion pour les marchés financiers et pour montrer ma volonté à faire ce qui me plait</p>
     </footer>
 
     <script>
