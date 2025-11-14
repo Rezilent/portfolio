@@ -1165,15 +1165,45 @@
 
             .track-side {
                 height: 50vh;
+                width: 100% !important;
+                flex: none !important;
+                cursor: pointer;
             }
 
+            /* Les titres restent visibles sur mobile */
+            .track-title {
+                opacity: 1 !important;
+                pointer-events: auto;
+            }
+
+            /* Les détails sont cachés par défaut */
             .track-details {
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s;
                 width: 80%;
                 padding: 2rem;
             }
 
+            /* Quand expanded, on montre les détails */
             .track-side.expanded {
                 flex: 2;
+            }
+
+            .track-side.expanded .track-details {
+                opacity: 1;
+                pointer-events: auto;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                max-width: 400px;
+            }
+
+            /* On cache le titre quand c'est expanded sur mobile */
+            .track-side.expanded .track-title {
+                opacity: 0;
             }
 
             .book-content {
