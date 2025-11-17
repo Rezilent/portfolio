@@ -711,115 +711,6 @@
             line-height: 1.8;
         }
 
-        /* OFF TRACK Section */
-        .off-track {
-            background: var(--color-dark);
-        }
-
-        .hobbies-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin: 4rem 0;
-        }
-
-        .hobby-card {
-            aspect-ratio: 1;
-            background: var(--color-primary);
-            border: 1px solid var(--color-border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 3rem;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .hobby-card::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: var(--color-accent);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.5s;
-            opacity: 0.1;
-        }
-
-        .hobby-card:hover::before {
-            width: 500px;
-            height: 500px;
-        }
-
-        .hobby-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--color-accent);
-        }
-
-        .hobby-icon {
-            font-size: 4rem;
-            margin-bottom: 2rem;
-            z-index: 1;
-        }
-
-        .hobby-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            z-index: 1;
-        }
-
-        .hobby-description {
-            color: var(--color-text-dim);
-            margin-top: 1rem;
-            z-index: 1;
-        }
-
-        /* Portugal Section */
-        .portugal-section {
-            background: var(--color-primary);
-            padding: 8rem 3rem;
-        }
-
-        .portugal-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: center;
-        }
-
-        .portugal-text h3 {
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 2rem;
-            color: var(--color-accent);
-        }
-
-        .portugal-text p {
-            font-size: 1.2rem;
-            color: var(--color-text-dim);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .portugal-image {
-            height: 500px;
-            background: var(--color-dark);
-            border: 2px solid var(--color-accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-text-dim);
-            font-size: 1.2rem;
-        }
-
         /* Mindset Section */
         .mindset-section {
             background: var(--color-dark);
@@ -1180,8 +1071,7 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .about-grid,
-            .portugal-content {
+            .about-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -1328,27 +1218,7 @@
             .quote {
                 text-align: center;
             }
-
-            /*@keyframes tapPulse {
-                0%, 100% {
-                    transform: translateX(-50%) scale(1);
-                    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
-                }
-                50% {
-                    transform: translateX(-50%) scale(1.05);
-                    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.6);
-                }
-            }
-
-            @keyframes tapBounce {
-                0%, 100% {
-                    transform: translateY(0);
-                }
-                50% {
-                    transform: translateY(-5px);
-                }
-            }
-        }*/
+        }
 
         @media (max-width: 768px) {
             .nav-links {
@@ -1395,11 +1265,6 @@
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
-        }
-
-        /* Hidden class for track sections */
-        .hidden-track {
-            display: none;
         }
     </style>
 </head>
@@ -1462,7 +1327,7 @@
             
             <div class="about-grid fade-in">
                 <div class="about-text">
-                    <p>Étudiant en dernière année d'école d'ingénieur, montrant un intérêt pour les marchés financiers, je combine à la fois formation académique financière très complète et une pratique personnelle. Je me forme continuellement au trading à travers la pratique, la lecture et l'analyse de cas réels.</p>
+                    <p>Étudiant en dernière année d'école d'ingénieur et montrant intérêt pour les marchés financiers, je combine à la fois formation académique financière très complète et une pratique personnelle. Je me forme continuellement au trading à travers la pratique, la lecture et l'analyse de cas réels.</p>
                     
                     <p>Ma curiosité m'amène à découvrir de nouvelles choses sur ce si grand domaine qu'est la finance de marché. Je suis quelqu'un de réactif tout en restant discipliné, et j'ai toujours une analyse sous le coude avant d'agir. Et surtout le plus important : ne jamais laisser les émotions dicter mes décisions. La FOMO n'a pas sa place dans mon trading.</p>
                 </div>
@@ -1506,7 +1371,7 @@
             
             <div class="track-side track-right" id="trackRight" onmouseenter="expandTrack('right')" onmouseleave="resetTracks()">
                 <div class="track-image-overlay"></div>
-                <div class="track-title">Tenue Décontracte</div>
+                <div class="track-title">Tenue Décontractée</div>
                 <div class="track-details" id="detailsRight">
                     <h3>Perso</h3>
                     <div class="detail-item">
@@ -1722,72 +1587,6 @@
                                 <p>Entraînement au scalping en utilisant cette technique en m5/m15 après une analyse en daily/weekly pour identifier la tendance.</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- OFF TRACK Section -->
-    <div id="offTrack" class="hidden-track">
-        <!-- Hobbies -->
-        <section class="off-track">
-            <div class="container">
-                <div class="section-label">Côté personnel</div>
-                <h2 class="section-title">Off Track</h2>
-                <div class="section-divider"></div>
-                
-                <div class="hobbies-grid">
-                    <div class="hobby-card fade-in">
-                        <div class="hobby-icon">🏄</div>
-                        <h3 class="hobby-title">Kitesurf</h3>
-                        <p class="hobby-description">Passion pour les sports de glisse et le vent</p>
-                    </div>
-                    
-                    <div class="hobby-card fade-in">
-                        <div class="hobby-icon">🏎️</div>
-                        <h3 class="hobby-title">Karting</h3>
-                        <p class="hobby-description">Adrénaline et compétition sur circuit</p>
-                    </div>
-                    
-                    <div class="hobby-card fade-in">
-                        <div class="hobby-icon">🎵</div>
-                        <h3 class="hobby-title">Musique</h3>
-                        <p class="hobby-description">Écoute et mix - DJ amateur</p>
-                    </div>
-                    
-                    <div class="hobby-card fade-in">
-                        <div class="hobby-icon">✈️</div>
-                        <h3 class="hobby-title">Voyages</h3>
-                        <p class="hobby-description">Explorer de nouvelles cultures</p>
-                    </div>
-                    
-                    <div class="hobby-card fade-in">
-                        <div class="hobby-icon">😄</div>
-                        <h3 class="hobby-title">Convivialité</h3>
-                        <p class="hobby-description">Créer de la bonne humeur autour de moi</p>
-                    </div>
-                    
-                    <div class="hobby-card fade-in">
-                        <div class="hobby-icon">🏁</div>
-                        <h3 class="hobby-title">F1</h3>
-                        <p class="hobby-description">Passionné de Formule 1</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Portugal Experience -->
-        <section class="portugal-section">
-            <div class="container">
-                <div class="portugal-content fade-in">
-                    <div class="portugal-text">
-                        <h3>🇵🇹 Portugal</h3>
-                        <p>Expérience de 3 mois dans une école de kitesurf au Portugal. Une aventure qui m'a appris l'adaptabilité, la gestion de l'incertitude et le travail en équipe multiculturelle.</p>
-                        <p>Des compétences directement transposables au trading : prise de décision rapide, gestion du stress, et performance sous pression.</p>
-                    </div>
-                    <div class="portugal-image">
-                        📸 Photo Portugal
                     </div>
                 </div>
             </div>
