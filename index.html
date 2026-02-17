@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Grelaud — Assistant Trader</title>
+    <title>Max Grelaud — Ingénieur spécialisé en Finance de Marché</title>
     <style>
         * {
             margin: 0;
@@ -711,6 +711,59 @@
             line-height: 1.8;
         }
 
+        .analysis-performance {
+            margin-top: 2rem;
+            padding: 1.5rem 2rem;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .analysis-performance.positive {
+            border-color: var(--color-accent);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .analysis-performance.negative {
+            border-color: #ff4444;
+            background: rgba(255, 68, 68, 0.05);
+        }
+
+        .performance-icon {
+            font-size: 1.8rem;
+        }
+
+        .performance-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .analysis-performance.positive .performance-label {
+            color: var(--color-accent);
+        }
+
+        .analysis-performance.negative .performance-label {
+            color: #ff4444;
+        }
+
+        .performance-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .performance-detail {
+            font-size: 0.9rem;
+            color: var(--color-text-dim);
+            margin-top: 0.15rem;
+        }
+
         /* Mindset Section */
         .mindset-section {
             background: var(--color-dark);
@@ -1310,7 +1363,7 @@
         
         <div class="hero-content">
             <h1 class="hero-title">Max Grelaud</h1>
-            <p class="hero-subtitle">Assistant Trader — Finance de Marché</p>
+            <p class="hero-subtitle">Ingénieur spécialisé en Finance de Marché</p>
         </div>
         
         <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
@@ -1406,108 +1459,92 @@
                 <div class="section-divider"></div>
                 
                 <p style="font-size: 1.2rem; color: var(--color-text-dim); margin-bottom: 2rem;">
-                    Trois analyses récentes menées de manière autonome autour des publications de résultats (earnings season, octobre 2025).
+                    Deux analyses menées de manière autonome autour des publications de résultats (earnings season, Q3-Q4 2025). Chaque analyse intègre valorisation relative, analyse technique et identification de catalyseurs.
                 </p>
                 
                 <div class="analyses-grid">
-                    <!-- AMD -->
+                    <!-- Palantir -->
                     <div class="analysis-card fade-in">
                         <div class="analysis-header">
                             <div class="analysis-number">01</div>
                             <div class="analysis-info">
-                                <h3>AMD</h3>
-                                <p class="analysis-subtitle">Advanced Micro Devices | Avant earnings Q3 2025</p>
+                                <h3>Palantir Technologies</h3>
+                                <p class="analysis-subtitle">PLTR | SHORT pré-earnings Q3 2025 — Novembre 2025</p>
                             </div>
                         </div>
                         
                         <div class="analysis-content">
                             <div class="analysis-row">
                                 <div class="analysis-label">Thèse</div>
-                                <div class="analysis-text">Valorisation excessive sur le moment</div>
+                                <div class="analysis-text">Valorisation déconnectée des fondamentaux malgré une croissance réelle. P/E forward >200x, bien au-delà des peers software (CrowdStrike ~65x, Datadog ~55x). Le marché price la perfection sur le narratif IA.</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Catalyseurs</div>
-                                <div class="analysis-text">Dominance écrasante de NVIDIA sur l'IA. Même si très bons résultats Q3 => attente marché trop élevée</div>
+                                <div class="analysis-text">Euphorie retail massive . Michael Burry annonce une position short publique. RSI en zone de surachat (>75). Divergence entre momentum retail et consensus. </div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Risques</div>
-                                <div class="analysis-text">Le domaine marche très fort sur le moment et ne cesse de monter. Sujet "à la mode"</div>
+                                <div class="analysis-text">Croissance revenue réelle (+63% YoY) et contrats gouvernementaux massifs (US Army $10B). Le titre pourrait continuer à monter sur le momentum IA si les résultats explosent le consensus. Risque de short squeeze élevé.</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Approche</div>
-                                <div class="analysis-text">Analyse valorisation (P/E élevé vs croissance). Comparaison marges vs NVIDIA. Conscience du risque pré-earnings</div>
+                                <div class="analysis-text">Valorisation relative (P/E, EV/Revenue vs peers). Analyse technique (RSI, volumes en déclin sur sommets, gap haussier non comblé = distribution). Analyse du sentiment (divergence retail vs institutionnel). Scénario "sell the news" post-earnings.</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Décision</div>
-                                <div class="analysis-text">Position SHORT prise avant earnings Q3 2025 sur court terme</div>
+                                <div class="analysis-text">Position SHORT prise avant earnings Q3 2025 (~$175) avec stop-loss serré au-dessus de $185. Objectif de prise de profit à $140.</div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-performance positive">
+                            <div class="performance-icon">📉</div>
+                            <div>
+                                <div class="performance-label">Performance — Thèse validée</div>
+                                <div class="performance-value">≈ −25% sur le titre (de ~$175 à ~$131)</div>
+                                <div class="performance-detail">Le titre a atteint $207 en décembre 2025 avant de corriger lourdement. Février 2026 : ~$131. La valorisation excessive a fini par se corriger.</div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Pinterest -->
+                    <!-- CrowdStrike -->
                     <div class="analysis-card fade-in">
                         <div class="analysis-header">
                             <div class="analysis-number">02</div>
                             <div class="analysis-info">
-                                <h3>Pinterest</h3>
-                                <p class="analysis-subtitle">PINS | Earnings season tech</p>
+                                <h3>CrowdStrike Holdings</h3>
+                                <p class="analysis-subtitle">CRWD | LONG post-incident, avant earnings Q3 FY2026 — Octobre 2025</p>
                             </div>
                         </div>
                         
                         <div class="analysis-content">
                             <div class="analysis-row">
                                 <div class="analysis-label">Thèse</div>
-                                <div class="analysis-text">Résultats solides mais guidance prix par action décevante + Monétisation des utilisateurs en croissance et croissance publicitaire</div>
+                                <div class="analysis-text">Le marché sous-estime la résilience de CrowdStrike après l'incident mondial de juillet 2024 (panne Falcon). Le titre trade avec une décote injustifiée par rapport à sa trajectoire de croissance. L'incident a créé une fenêtre d'entrée.</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Catalyseurs</div>
-                                <div class="analysis-text">Audience qualifiée et amélioration ARPU + Amazon partnership + Shopping features + AI recommendations</div>
+                                <div class="analysis-text">ARR en accélération (+23% YoY), rétention clients >95% malgré l'incident. Lancement Charlotte AI et Falcon Flex. Cybercrime >$10 trn/an : demande structurelle. Earnings Q3 FY2026 (2 déc. 2025) attendus comme preuve de reprise.</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Risques</div>
-                                <div class="analysis-text">Ralentissement croissance utilisateurs et concurrence META, YouTube, TikTok sur les dépenses publicitaires</div>
+                                <div class="analysis-text">Réputation entachée post-incident, risque de perte de clients grands comptes. Concurrence (Palo Alto, Zscaler, Fortinet). Valorisation déjà élevée (~65x P/E forward). Résultat du procès actionnaires en cours.</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Approche</div>
-                                <div class="analysis-text">Compréhension du contexte et regard sur prix actuel face aux earnings Q3</div>
+                                <div class="analysis-text">Analyse fondamentale (ARR, net new ARR, taux de rétention, pipeline produit). Étude du momentum sectoriel cybersécurité (NIS2 Europe, budgets IT en hausse). Analyse technique : support à $320, breakout confirmé au-dessus de $360.</div>
                             </div>
                             <div class="analysis-row">
                                 <div class="analysis-label">Décision</div>
-                                <div class="analysis-text">Position LONG prise sur long terme après la chute due à l'annonce des résultats</div>
+                                <div class="analysis-text">Position LONG initiée en octobre 2025 autour de $350. Objectif $450+ sur horizon 3-6 mois. Stop-loss sous $310.</div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Duolingo -->
-                    <div class="analysis-card fade-in">
-                        <div class="analysis-header">
-                            <div class="analysis-number">03</div>
-                            <div class="analysis-info">
-                                <h3>Duolingo</h3>
-                                <p class="analysis-subtitle">Duolingo Inc. | Post earnings Q3 2024</p>
-                            </div>
-                        </div>
-                        
-                        <div class="analysis-content">
-                            <div class="analysis-row">
-                                <div class="analysis-label">Thèse</div>
-                                <div class="analysis-text">Leader de l'apprentissage mobile avec croissance exceptionnelle des utilisateurs (+54% DAU) et prix relativement bas</div>
-                            </div>
-                            <div class="analysis-row">
-                                <div class="analysis-label">Catalyseurs</div>
-                                <div class="analysis-text">Croissance DAU record (37M) + Abonnés payants +47% + Marges EBITDA en expansion (24,7%)</div>
-                            </div>
-                            <div class="analysis-row">
-                                <div class="analysis-label">Risques</div>
-                                <div class="analysis-text">Compétition avec l'IA générative gratuite (ChatGPT, Gemini...) facilitant l'apprentissage conversationnel</div>
-                            </div>
-                            <div class="analysis-row">
-                                <div class="analysis-label">Approche</div>
-                                <div class="analysis-text">Comparaison vs concurrence IA + Analyse de fondamentaux solides</div>
-                            </div>
-                            <div class="analysis-row">
-                                <div class="analysis-label">Décision</div>
-                                <div class="analysis-text">Aucune position prise car risque structurel IA trop élevé. Suivi du cours pour apprentissage</div>
+
+                        <div class="analysis-performance positive">
+                            <div class="performance-icon">📈</div>
+                            <div>
+                                <div class="performance-label">Performance — Thèse validée</div>
+                                <div class="performance-value">≈ +18% depuis l'entrée ($350 → ~$415)</div>
+                                <div class="performance-detail">Le titre a rallié jusqu'à $543 début janvier 2026 (+55% depuis l'entrée) avant de corriger avec le marché. Toujours en gain mi-février 2026.</div>
                             </div>
                         </div>
                     </div>
@@ -1597,9 +1634,9 @@
     <section id="contact" class="contact">
         <div class="container">
             <h2>Prêt à discuter ?</h2>
-            <p>Je suis disponible pour échanger sur les opportunités en tant qu'assistant trader et en finance de marché.</p>
+            <p>Je suis disponible pour échanger sur les opportunités en finance de marché.</p>
             <div class="contact-buttons">
-                <a href="mailto:maxgrelaud.pro@gmail.com" class="contact-button primary">Email</a>
+                <a href="/cdn-cgi/l/email-protection#2a474b524d584f464b5f4e045a58456a4d474b434604494547" class="contact-button primary">Email</a>
                 <a href="https://www.linkedin.com/in/max-grelaud/" target="_blank" class="contact-button">LinkedIn</a>
             </div>
         </div>
@@ -1694,7 +1731,7 @@
 
     <!-- Footer -->
     <footer>
-        <p>© 2025 Max Grelaud — Portfolio Assistant Trader</p>
+        <p>© 2025 Max Grelaud — Portfolio Ingénieur Finance de Marché</p>
         <p style="margin-top: 1rem; font-size: 0.9rem;">Créé avec passion pour les marchés financiers et pour montrer ma volonté à faire ce qui me plaît</p>
     </footer>
 
@@ -1709,13 +1746,19 @@
                     track.appendChild(clone);
                 }
             }
+
+            // Loading screen - fallback si window.load ne se déclenche pas
+            const loadingScreen = document.getElementById('loadingScreen');
+            setTimeout(() => {
+                if (loadingScreen) loadingScreen.classList.add('hidden');
+            }, 3000);
         });
 
         // Loading screen
         window.addEventListener('load', () => {
             const loadingScreen = document.getElementById('loadingScreen');
             setTimeout(() => {
-                loadingScreen.classList.add('hidden');
+                if (loadingScreen) loadingScreen.classList.add('hidden');
             }, 2200);
         });
 
@@ -1947,7 +1990,7 @@
             lastScroll = currentScroll;
         });
 
-        // Smooth scroll
+        /// Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
